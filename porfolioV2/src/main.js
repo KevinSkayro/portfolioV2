@@ -1,6 +1,7 @@
+import '@src/components/header/header.js'
 import { createApp } from 'vue'
 import './style.css'
-import App from './App.vue'
+import App from './mainApp.vue'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'

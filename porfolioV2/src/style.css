@@ -1,6 +1,6 @@
 body {
     font-family: "Open Sans", sans-serif;
-    background: #030303;
+    /* background: #030303; */
     scroll-behavior: smooth;
   }
   .main-container {
@@ -8,7 +8,7 @@ body {
     position: relative;
   }
   .video-container {
-    height: 130vh;
+    height: 90vh;
     overflow: hidden;
   }
   
@@ -72,7 +72,7 @@ body {
     background: #fff;
   }
   #about {
-    margin-top: -10rem;
+    margin-top: 7rem;
     transform: skewY(-5deg);
     background: #fff;
     padding: 5rem 0;
