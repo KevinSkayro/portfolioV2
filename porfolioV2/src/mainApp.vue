@@ -1,6 +1,9 @@
 <script setup>
+import { defineAsyncComponent } from 'vue';
 import Header from '@src/components/header.vue';
-import About from '@src/components/about.vue';
+const About = defineAsyncComponent(() => import('@src/components/about.vue'));
+// import Header from '@src/components/header.vue';
+// import About from '@src/components/about.vue';
 </script>
 <template>
     <div class="main-container">
