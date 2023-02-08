@@ -1,7 +1,7 @@
 <template>
         <header class="video-container">
             <div class="fullscreen-video-wrap">
-            <video src="@src/VIDEO/Motion.mp4" autoplay muted loop></video>
+                <div id="canvas_container"></div>
             </div>
             <div class="hero-content">
             <h1 class="header-text">Hi, I'm Kevin</h1>
@@ -13,3 +13,14 @@
             </div>
       </header>
 </template>
+
+<script>
+
+
+export default {
+    created: () => {
+        import('@src/components/header/header.js');
+    },
+}
+
+</script>

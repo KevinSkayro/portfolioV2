@@ -1,10 +1,10 @@
 <script setup>
-// import Header from '@src/components/header.vue';
+import Header from '@src/components/header.vue';
 import About from '@src/components/about.vue';
 </script>
 <template>
     <div class="main-container">
-        <!-- <Header /> -->
+        <Header />
         <main>
             <About />
             <section id="tech">
