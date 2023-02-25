@@ -1,197 +1,96 @@
-import '@lib/three/0.121.1/three.js';
-import '@lib/three/0.121.1/orbitControls.js';
-import '@lib/simplexNoise/2.4.0/noise.js';
 import './header.css'
-let renderer,
-scene,
-camera,
-sphereBg,
-nucleus,
-stars,
-controls,
-container = document.getElementById("canvas_container"),
-timeout_Debounce,
-noise = new SimplexNoise(),
-blobScale = 3;
+import * as THREE from 'three'
 
-init();
-animate();
+let scene, renderer, camera
 
-function init() {
-    scene = new THREE.Scene();
+const colors = {
+    red: 0xf25346,
+    yellow: 0xedeb27,
+    white: 0xd8d0d1,
+    brown: 0x59332e,
+    pink: 0xF5986E,
+    brownDark: 0x23190f,
+    blue: 0x68c3c0,
+    green: 0x458248,
+    purple: 0x551A8B,
+    lightgreen: 0x629265,
+}
 
-    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.01, 1000)
-    camera.position.set(0,0,230);
+function createScene() {
+    scene = new THREE.Scene()
 
-    const directionalLight = new THREE.DirectionalLight("#fff", 2);
-    directionalLight.position.set(0, 50, -20);
-    scene.add(directionalLight);
+    // Add FOV Fog effect to the scene. Same colour as the BG int he stylesheet.
+    scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);
 
-    let ambientLight = new THREE.AmbientLight("#ffffff", 1);
-    ambientLight.position.set(0, 20, 20);
-    scene.add(ambientLight);
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
+    camera.position.setZ(1200)
+    camera.position.setX(0)
+    camera.position.setY(300)
 
     renderer = new THREE.WebGLRenderer({
+        alpha: true,
         antialias: true,
-        alpha: true
-    });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+        canvas: document.querySelector('#bg'),
+    })
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setSize(window.innerWidth, window.innerHeight)
 
-    //OrbitControl
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 4;
-    controls.maxDistance = 350;
-    controls.minDistance = 350;
-    controls.enablePan = false;
-
-    const loader = new THREE.TextureLoader();
-    const textureSphereBg = loader.load('https://i.ibb.co/4gHcRZD/bg3-je3ddz.jpg');
-    const texturenucleus = loader.load('https://images.theconversation.com/files/379516/original/file-20210119-15-tmyvf4.jpg');
-    const textureStar = loader.load("https://i.ibb.co/ZKsdYSz/p1-g3zb2a.png");
-    const texture1 = loader.load("https://i.ibb.co/F8by6wW/p2-b3gnym.png");  
-    const texture2 = loader.load("https://i.ibb.co/yYS2yx5/p3-ttfn70.png");
-    const texture4 = loader.load("https://i.ibb.co/yWfKkHh/p4-avirap.png");
-
-
-    /*  Nucleus  */   
-    texturenucleus.anisotropy = 16;
-    let icosahedronGeometry = new THREE.IcosahedronGeometry(30, 10);
-    let lambertMaterial = new THREE.MeshPhongMaterial({ map: texturenucleus });
-    nucleus = new THREE.Mesh(icosahedronGeometry, lambertMaterial);
-    scene.add(nucleus);
-
-
-    /*    Sphere  Background   */
-    textureSphereBg.anisotropy = 16;
-    let geometrySphereBg = new THREE.SphereBufferGeometry(150, 40, 40);
-    let materialSphereBg = new THREE.MeshBasicMaterial({
-        side: THREE.BackSide,
-        map: textureSphereBg,
-    });
-    sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg);
-    scene.add(sphereBg);
-
-
-    /*    Moving Stars   */
-    let starsGeometry = new THREE.Geometry();
-
-    for (let i = 0; i < 50; i++) {
-        let particleStar = randomPointSphere(250); 
-
-        particleStar.velocity = THREE.MathUtils.randInt(50, 200);
-
-        particleStar.startX = particleStar.x;
-        particleStar.startY = particleStar.y;
-        particleStar.startZ = particleStar.z;
-
-        starsGeometry.vertices.push(particleStar);
-    }
-    let starsMaterial = new THREE.PointsMaterial({
-        size: 8,
-        color: "#ffffff",
-        transparent: true,
-        opacity: 0.8,
-        map: textureStar,
-        blending: THREE.AdditiveBlending,
-    });
-    starsMaterial.depthWrite = false;  
-    stars = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(stars);
-
-
-    /*    Fixed Stars   */
-    function createStars(texture, size, total) {
-        let pointGeometry = new THREE.Geometry();
-        let pointMaterial = new THREE.PointsMaterial({
-            size: size,
-            map: texture,
-            blending: THREE.AdditiveBlending,                      
-        });
-
-        for (let i = 0; i < total; i++) {
-            let radius = THREE.MathUtils.randInt(149, 70); 
-            let particles = randomPointSphere(radius);
-            pointGeometry.vertices.push(particles);
-        }
-        return new THREE.Points(pointGeometry, pointMaterial);
-    }
-    scene.add(createStars(texture1, 15, 20));   
-    scene.add(createStars(texture2, 5, 5));
-    scene.add(createStars(texture4, 7, 5));
-
-
-    function randomPointSphere (radius) {
-        let theta = 2 * Math.PI * Math.random();
-        let phi = Math.acos(2 * Math.random() - 1);
-        let dx = 0 + (radius * Math.sin(phi) * Math.cos(theta));
-        let dy = 0 + (radius * Math.sin(phi) * Math.sin(theta));
-        let dz = 0 + (radius * Math.cos(phi));
-        return new THREE.Vector3(dx, dy, dz);
-    }
+    //RESPONSIVE LISTENER
+    window.addEventListener('resize', handleWindowResize, false);
 }
+
+
+//RESPONSIVE FUNCTION
+function handleWindowResize() {
+    const height = window.innerHeight
+    const width = window.innerWidth
+    renderer.setSize(width, height)
+    camera.aspect = width / height
+    camera.updateProjectionMatrix()
+}
+
+
+function createLand() {
+    // radius top, radius bottom, height, number of segments on the radius, number of segments vertically
+    const geometry = new THREE.CylinderGeometry(1000, 1000, 1200, 40, 10);
+    // rotate the geometry on the x axis
+    geometry.rotateX(-Math.PI / 2);
+    const material = new THREE.MeshPhongMaterial({
+        color: colors.blue,
+        transparent: true,
+        opacity: .6,
+        flatShading: true,
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.y = -600;
+    // sphere.position.y = -12.00;
+    scene.add(sphere);
+
+
+    const pointLight = new THREE.PointLight(colors.white)
+    pointLight.position.set(10, 10, 10);
+
+    const ambientLight = new THREE.AmbientLight(colors.white)
+    scene.add(pointLight, ambientLight);
+}
+
+
+
 
 
 function animate() {
-
-    //Stars  Animation
-    stars.geometry.vertices.forEach(function (v) {
-        v.x += (0 - v.x) / v.velocity;
-        v.y += (0 - v.y) / v.velocity;
-        v.z += (0 - v.z) / v.velocity;
-
-        v.velocity -= 0.3;
-
-        if (v.x <= 5 && v.x >= -5 && v.z <= 5 && v.z >= -5) {
-            v.x = v.startX;
-            v.y = v.startY;
-            v.z = v.startZ;
-            v.velocity = THREE.MathUtils.randInt(50, 300);
-        }
-    });
-
-
-    //Nucleus Animation
-    nucleus.geometry.vertices.forEach(function (v) {
-        let time = Date.now();
-        v.normalize();
-        let distance = nucleus.geometry.parameters.radius + noise.noise3D(
-            v.x + time * 0.0005,
-            v.y + time * 0.0003,
-            v.z + time * 0.0008
-        ) * blobScale;
-        v.multiplyScalar(distance);
-    })
-    nucleus.geometry.verticesNeedUpdate = true;
-    nucleus.geometry.normalsNeedUpdate = true;
-    nucleus.geometry.computeVertexNormals();
-    nucleus.geometry.computeFaceNormals();
-    nucleus.rotation.y += 0.002;
-
-
-    //Sphere Beckground Animation
-    sphereBg.rotation.x += 0.002;
-    sphereBg.rotation.y += 0.002;
-    sphereBg.rotation.z += 0.002;
-
-    
-    controls.update();
-    stars.geometry.verticesNeedUpdate = true;
-    renderer.render(scene, camera);
     requestAnimationFrame(animate);
+    // sphere.rotation.x += 0.01;
+    // sphere.rotation.y += 0.01;
+    console.log('animate')
+    renderer.render(scene, camera)
 }
 
-/*     Resize     */
-window.addEventListener("resize", () => {
-    clearTimeout(timeout_Debounce);
-    timeout_Debounce = setTimeout(onWindowResize, 80);
-});
-function onWindowResize() {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-}
 
-// import css in line
+function init() {
+    createScene()
+    createLand()
+    animate()
+
+}
+init()
