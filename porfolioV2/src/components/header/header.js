@@ -43,8 +43,6 @@ function createScene() {
     window.addEventListener('resize', handleWindowResize, false)
 }
 
-
-//RESPONSIVE FUNCTION
 function handleWindowResize() {
     const height = window.innerHeight
     const width = window.innerWidth
@@ -165,7 +163,20 @@ function createTree() {
     return treeGeometry
 }
 
-
+function createSun() {
+    const sunGeometry = new THREE.SphereGeometry(400, 20, 10)
+    const sunMaterial = new THREE.MeshPhongMaterial({
+        color: colors.yellow,
+        flatShading: true
+    });
+    const sun = new THREE.Mesh(sunGeometry, sunMaterial)
+    sun.castShadow = false
+    sun.receiveShadow = false
+    sun.scale.set(1, 1, .3)
+    sun.position.set(0, -30, -850)
+    // scene.add(sunGeometry)
+    scene.add(sun)
+}
 
 
 function animate() {
@@ -182,6 +193,7 @@ function init() {
     createScene()
     createLights()
     createOrbit()
+    createSun()
     createLand()
     createForest()
     animate()
