@@ -5,7 +5,8 @@ let scene,
     renderer,
     camera,
     offSet = -600,
-    earthGeometry
+    earthGeometry,
+    forestGeometry
 
 const colors = {
     red: 0xf25346,
@@ -57,20 +58,20 @@ function createLights() {
     const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9)
     const shadowLight = new THREE.DirectionalLight(0xffffff, .9);
 
-    shadowLight.position.set(0, 350, 350);
-    shadowLight.castShadow = true;
+    shadowLight.position.set(0, 350, 350)
+    shadowLight.castShadow = true
 
     // define the visible area of the projected shadow
-    shadowLight.shadow.camera.left = -650;
-    shadowLight.shadow.camera.right = 650;
-    shadowLight.shadow.camera.top = 650;
-    shadowLight.shadow.camera.bottom = -650;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
+    shadowLight.shadow.camera.left = -650
+    shadowLight.shadow.camera.right = 650
+    shadowLight.shadow.camera.top = 650
+    shadowLight.shadow.camera.bottom = -650
+    shadowLight.shadow.camera.near = 1
+    shadowLight.shadow.camera.far = 1000
 
     // Shadow map size
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+    shadowLight.shadow.mapSize.width = 2048
+    shadowLight.shadow.mapSize.height = 2048
     scene.add(hemisphereLight, shadowLight)
 }
 
@@ -92,46 +93,48 @@ function createOrbit() {
     // new Object3D
     const orbitGeometry = new THREE.Object3D()
     orbitGeometry.position.y = offSet;
-    orbitGeometry.rotation.z = -Math.PI / 6;
-    scene.add(orbitGeometry);
+    orbitGeometry.rotation.z = -Math.PI / 6
+    scene.add(orbitGeometry)
 }
 
 function createForest() {
-    const forestGeometry = new THREE.Object3D()
-    const treesNumber = 100
-    const spreadTrees = Math.PI * 2 / treesNumber;
-    forestGeometry.position.y = offSet;
-    scene.add(forestGeometry)
+    forestGeometry = new THREE.Object3D()
+    const treesNumber = 300
+    const spreadTrees = Math.PI * 2 / treesNumber
+
     for (let i = 0; i < treesNumber; i++) {
 
         const tree = createTree()
         const angle = spreadTrees * i
         const radius = 605
+        tree.position.y = Math.sin(angle) * radius
         tree.position.x = Math.cos(angle) * radius
-        tree.position.z = Math.sin(angle) * radius
+
 
         // rotate the tree acording to its position
         tree.rotation.z = angle + (Math.PI / 2) * 3
-        tree.position.z = 0 - Math.random() * 600;
+        tree.position.z = 0 - Math.random() * 600
 
         const scale = .3 + Math.random() * .75
         tree.scale.set(scale, scale, scale)
 
         console.log(tree)
         forestGeometry.add(tree)
-    }
 
+    }
+    forestGeometry.position.y = offSet
+    scene.add(forestGeometry)
 }
 
 function createTree() {
     const treeGeometry = new THREE.Object3D()
 
     const geomTreeBase = new THREE.BoxGeometry(10, 20, 10)
-    const matTreeBase = new THREE.MeshBasicMaterial({ color: colors.brown });
-    const treeBase = new THREE.Mesh(geomTreeBase, matTreeBase);
-    treeBase.castShadow = true;
-    treeBase.receiveShadow = true;
-    treeGeometry.add(treeBase);
+    const matTreeBase = new THREE.MeshBasicMaterial({ color: colors.brown })
+    const treeBase = new THREE.Mesh(geomTreeBase, matTreeBase)
+    treeBase.castShadow = true
+    treeBase.receiveShadow = true
+    treeGeometry.add(treeBase)
 
     const matTreeLeaves = new THREE.MeshPhongMaterial({
         color: colors.green,
@@ -170,6 +173,7 @@ function animate() {
     // sphere.rotation.x += 0.01
     // sphere.rotation.y += 0.01
     earthGeometry.rotation.z += 0.005
+    forestGeometry.rotation.z += 0.005
     renderer.render(scene, camera)
 }
 
