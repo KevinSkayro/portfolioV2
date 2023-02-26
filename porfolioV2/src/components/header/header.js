@@ -54,7 +54,7 @@ function handleWindowResize() {
 function createLights() {
 
     const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9)
-    const shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+    const shadowLight = new THREE.DirectionalLight(0xffffff, .9)
 
     shadowLight.position.set(0, 350, 350)
     shadowLight.castShadow = true
@@ -80,27 +80,29 @@ function createLand() {
     landGeometry.rotateX(-Math.PI / 2)
     const material = new THREE.MeshPhongMaterial({
         color: colors.lightgreen,
-        flatShading: true
+        flatShading: true,
+
     })
     earthGeometry = new THREE.Mesh(landGeometry, material)
-    earthGeometry.position.y = offSet;
+    earthGeometry.position.y = offSet
+    earthGeometry.receiveShadow = true
     scene.add(earthGeometry)
 }
 
 function createOrbit() {
     // new Object3D
     const orbitGeometry = new THREE.Object3D()
-    orbitGeometry.position.y = offSet;
+    orbitGeometry.position.y = offSet
     orbitGeometry.rotation.z = -Math.PI / 6
     scene.add(orbitGeometry)
 }
 
 function createForest() {
     forestGeometry = new THREE.Object3D()
-    const treesNumber = 300
-    const spreadTrees = Math.PI * 2 / treesNumber
+    const treesQty = 300
+    const spreadTrees = Math.PI * 2 / treesQty
 
-    for (let i = 0; i < treesNumber; i++) {
+    for (let i = 0; i < treesQty; i++) {
 
         const tree = createTree()
         const angle = spreadTrees * i
@@ -115,13 +117,34 @@ function createForest() {
 
         const scale = .3 + Math.random() * .75
         tree.scale.set(scale, scale, scale)
-
-        console.log(tree)
+        tree.clastShadow = true
         forestGeometry.add(tree)
+    }
 
+
+    const flowerQty = 350
+    const spreadFlowers = Math.PI * 2 / flowerQty
+
+    for (let i = 0; i < flowerQty; i++) {
+
+        const flower = createFlower()
+        const angle = spreadFlowers * i
+        const radius = 605
+        flower.position.y = Math.sin(angle) * radius
+        flower.position.x = Math.cos(angle) * radius
+
+        // rotate the tree acording to its position
+        flower.rotation.z = angle + (Math.PI / 2) * 3
+        flower.position.z = 0 - Math.random() * 600
+
+        const scale = .1 + Math.random() * .3
+        flower.scale.set(scale, scale, scale)
+
+        forestGeometry.add(flower)
     }
     forestGeometry.position.y = offSet
     scene.add(forestGeometry)
+
 }
 
 function createTree() {
@@ -153,14 +176,73 @@ function createTree() {
     treeLeaves2.receiveShadow = true
     treeGeometry.add(treeLeaves2)
 
-    const geomTreeLeaves3 = new THREE.CylinderGeometry(1, 6 * 3, 6 * 3, 4);
-    const treeLeaves3 = new THREE.Mesh(geomTreeLeaves3, matTreeLeaves);
-    treeLeaves3.castShadow = true;
-    treeLeaves3.position.y = 55;
-    treeLeaves3.receiveShadow = true;
+    const geomTreeLeaves3 = new THREE.CylinderGeometry(1, 6 * 3, 6 * 3, 4)
+    const treeLeaves3 = new THREE.Mesh(geomTreeLeaves3, matTreeLeaves)
+    treeLeaves3.castShadow = true
+    treeLeaves3.position.y = 55
+    treeLeaves3.receiveShadow = true
     treeGeometry.add(treeLeaves3)
 
     return treeGeometry
+}
+
+function createFlower() {
+    const flowerGeometry = new THREE.Object3D()
+    const stemGeometry = new THREE.BoxGeometry(5, 50, 5, 1, 1, 1)
+    const stemMaterial = new THREE.MeshPhongMaterial({
+        color: colors.green,
+        flatShading: true
+    })
+    const stem = new THREE.Mesh(stemGeometry, stemMaterial)
+    stem.castShadow = true
+    stem.receiveShadow = true
+    flowerGeometry.add(stem)
+
+    const petalCoreGeometry = new THREE.BoxGeometry(10, 10, 10, 1, 1, 1)
+    const petalCoreMaterial = new THREE.MeshPhongMaterial({
+        color: colors.yellow,
+        flatShading: true
+    })
+    const petalCore = new THREE.Mesh(petalCoreGeometry, petalCoreMaterial)
+    petalCore.castShadow = true
+    petalCore.receiveShadow = true
+
+    const petalColors = [colors.red, colors.yellow, colors.blue]
+    const petalColor = petalColors[Math.floor(Math.random() * 3)]
+
+    const petalGeometry = new THREE.BoxGeometry(15, 20, 5, 1, 3, 1)
+    const petalMaterial = new THREE.MeshBasicMaterial({
+        color: petalColor
+    })
+    console.log(petalGeometry)
+    let positionAttribute = petalGeometry.attributes.position;
+
+    // Modify the y-coordinates of some vertices by updating the position attribute
+    positionAttribute.setY(5, positionAttribute.getY(5) - 4);
+    positionAttribute.setY(4, positionAttribute.getY(4) - 4);
+    positionAttribute.setY(7, positionAttribute.getY(7) + 4);
+    positionAttribute.setY(6, positionAttribute.getY(6) + 4);
+
+    // Mark the position attribute as needing an update
+    positionAttribute.needsUpdate = true;
+
+
+    petalGeometry.translate(12.5, 0, 3)
+
+    let petals = []
+    for (let i = 0; i < 4; i++) {
+        petals[i] = new THREE.Mesh(petalGeometry, petalMaterial)
+        petals[i].rotation.z = i * Math.PI / 2
+        petals[i].castShadow = true
+        petals[i].receiveShadow = true
+    }
+
+    petalCore.add(petals[0], petals[1], petals[2], petals[3])
+    petalCore.position.y = 25
+    petalCore.position.z = 3
+    flowerGeometry.add(petalCore)
+
+    return flowerGeometry
 }
 
 function createSun() {
@@ -168,7 +250,7 @@ function createSun() {
     const sunMaterial = new THREE.MeshPhongMaterial({
         color: colors.yellow,
         flatShading: true
-    });
+    })
     const sun = new THREE.Mesh(sunGeometry, sunMaterial)
     sun.castShadow = false
     sun.receiveShadow = false
