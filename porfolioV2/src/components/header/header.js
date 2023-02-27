@@ -6,7 +6,8 @@ let scene,
     camera,
     offSet = -600,
     earthGeometry,
-    forestGeometry
+    forestGeometry,
+    skyGeometry
 
 const colors = {
     red: 0xf25346,
@@ -217,7 +218,6 @@ function createFlower() {
     const petalMaterial = new THREE.MeshBasicMaterial({
         color: petalColor
     })
-    console.log(petalGeometry)
     let positionAttribute = petalGeometry.attributes.position
 
     // Modify the y-coordinates of some vertices by updating the position attribute
@@ -263,13 +263,65 @@ function createSun() {
     scene.add(sun)
 }
 
+function createSky() {
+    skyGeometry = new THREE.Object3D()
+
+    const cloudNumber = 25
+    const spreadClouds = Math.PI * 2 / cloudNumber
+
+    for (let i = 0; i < cloudNumber; i++) {
+        const cloud = createCloud()
+
+        const cloudRotation = spreadClouds * i
+        const cloudRadius = 800 + Math.random() * 200
+
+        cloud.position.x = Math.cos(cloudRotation) * cloudRadius
+        cloud.position.y = Math.sin(cloudRotation) * cloudRadius
+
+        cloud.position.z = -400 - Math.random() * 400
+        cloud.rotation.z = cloudRotation * i + Math.PI / 2
+
+        const scale = 1 + Math.random() * 2
+        cloud.scale.set(scale, scale, scale)
+
+        skyGeometry.add(cloud)
+    }
+
+    skyGeometry.position.y = offSet
+    scene.add(skyGeometry)
+}
+
+function createCloud() {
+    const cloudGeometry = new THREE.Object3D()
+    const cloudGeom = new THREE.DodecahedronGeometry(20, 0)
+    const cloudMaterial = new THREE.MeshPhongMaterial({
+        color: colors.white,
+    })
+
+    const cloudBlocks = 3 + Math.floor(Math.random() * 3)
+
+    for (let i = 0; i < cloudBlocks; i++) {
+        const cloud = new THREE.Mesh(cloudGeom, cloudMaterial)
+        cloud.position.x = i * 15
+        cloud.position.y = Math.random() * 10
+        cloud.position.z = Math.random() * 10
+        cloud.rotation.z = Math.random() * Math.PI * 2
+        cloud.rotation.y = Math.random() * Math.PI * 2
+        const scale = .1 + Math.random() * .9
+        cloud.scale.set(scale, scale, scale)
+        cloud.castShadow = true
+        cloud.receiveShadow = true
+        cloudGeometry.add(cloud)
+    }
+    return cloudGeometry
+}
 
 function animate() {
     requestAnimationFrame(animate)
-    // sphere.rotation.x += 0.01
-    // sphere.rotation.y += 0.01
+
     earthGeometry.rotation.z += 0.005
     forestGeometry.rotation.z += 0.005
+    skyGeometry.rotation.z += 0.003
     renderer.render(scene, camera)
 }
 
@@ -281,6 +333,9 @@ function init() {
     createSun()
     createLand()
     createForest()
+    createSky()
+
+
     animate()
 
 }
