@@ -7,8 +7,8 @@ let scene,
     offSet = -600,
     earthGeometry,
     forestGeometry,
-    skyGeometry
-
+    skyGeometry,
+    airplane
 const colors = {
     red: 0xf25346,
     yellow: 0xedeb27,
@@ -22,13 +22,113 @@ const colors = {
     lightgreen: 0x629265,
 }
 
+const world = {
+    initSpeed: 0.00035,
+    incrementSpeedByTime: 0.0000025,
+    incrementSpeedByLevel: 0.000005,
+    distanceForSpeedUpdate: 100,
+    ratioSpeedDistance: 50,
+
+    simpleGunLevelDrop: 1.1,
+    doubleGunLevelDrop: 2.3,
+    betterGunLevelDrop: 3.5,
+
+    maxLifes: 3,
+    pauseLifeSpawn: 400,
+
+    levelCount: 6,
+    distanceForLevelUpdate: 500,
+
+    planeDefaultHeight: 150,
+    planeAmpHeight: 80,
+    planeAmpWidth: 75,
+    planeMoveSensivity: 0.005,
+    planeRotXSensivity: 0.0008,
+    planeRotZSensivity: 0.0004,
+    planeMinSpeed: 1.2,
+    planeMaxSpeed: 1.6,
+
+    seaRadius: 600,
+    seaLength: 800,
+    wavesMinAmp: 5,
+    wavesMaxAmp: 20,
+    wavesMinSpeed: 0.001,
+    wavesMaxSpeed: 0.003,
+
+    cameraSensivity: 0.002,
+    cameraDistance: 150,
+
+    coinDistanceTolerance: 15,
+    coinsSpeed: 0.5,
+    distanceForCoinsSpawn: 50,
+
+    collectibleDistanceTolerance: 15,
+    collectiblesSpeed: 0.6,
+
+    enemyDistanceTolerance: 10,
+    enemiesSpeed: 0.6,
+    distanceForEnemiesSpawn: 50,
+}
+
+const utils = {
+    normalize: function (v, vmin, vmax, tmin, tmax) {
+        const nv = Math.max(Math.min(v, vmax), vmin)
+        const dv = vmax - vmin
+        const pc = (nv - vmin) / dv
+        const dt = tmax - tmin
+        const tv = tmin + (pc * dt)
+        return tv
+    },
+
+    findWhere: function (list, properties) {
+        for (const elem of list) {
+            let all = true
+            for (const key in properties) {
+                if (elem[key] !== properties[key]) {
+                    all = false
+                    break
+                }
+            }
+            if (all) {
+                return elem
+            }
+        }
+        return null
+    },
+
+    randomOneOf: function (choices) {
+        return choices[Math.floor(Math.random() * choices.length)]
+    },
+
+    randomFromRange: function (min, max) {
+        return min + Math.random() * (max - min)
+    },
+
+    collide: function (mesh1, mesh2, tolerance) {
+        const diffPos = mesh1.position.clone().sub(mesh2.position.clone())
+        const d = diffPos.length()
+        return d < tolerance
+    },
+
+    makeTetrahedron: function (a, b, c, d) {
+        return [
+            a[0], a[1], a[2],
+            b[0], b[1], b[2],
+            c[0], c[1], c[2],
+            b[0], b[1], b[2],
+            c[0], c[1], c[2],
+            d[0], d[1], d[2],
+        ]
+    }
+}
+
 function createScene() {
     scene = new THREE.Scene()
     // Add FOV Fog effect to the scene. Same colour as the BG int he stylesheet.
     scene.fog = new THREE.Fog(0xf7d9aa, 100, 950)
 
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
-    camera.position.setZ(100)
+    camera.position.setZ(world.cameraDistance)
     camera.position.setX(0)
     camera.position.setY(150)
 
@@ -316,6 +416,362 @@ function createCloud() {
     return cloudGeometry
 }
 
+function createPlane() {
+    airplane = new Airplane()
+    airplane.mesh.scale.set(.25, .25, .25)
+    airplane.mesh.position.y = world.planeDefaultHeight
+    scene.add(airplane.mesh)
+}
+
+class Airplane {
+    constructor() {
+        const [mesh, propeller, pilot] = createAirplaneMesh()
+        this.mesh = mesh
+        this.propeller = propeller
+        this.pilot = pilot
+        this.weapon = null
+        this.lastShot = 0
+    }
+
+
+    equipWeapon(weapon) {
+        if (this.weapon) {
+            this.mesh.remove(this.weapon.mesh)
+        }
+        this.weapon = weapon
+        if (this.weapon) {
+            this.mesh.add(this.weapon.mesh)
+        }
+    }
+
+
+    shoot() {
+        if (!this.weapon) {
+            return
+        }
+
+        // rate-limit the shooting
+        const nowTime = new Date().getTime() / 1000
+        const ready = nowTime - this.lastShot > this.weapon.downtime()
+        if (!ready) {
+            return
+        }
+        this.lastShot = nowTime
+
+        // fire the shot
+        let direction = new THREE.Vector3(10, 0, 0)
+        direction.applyEuler(airplane.mesh.rotation)
+        this.weapon.shoot(direction)
+
+        // recoil airplane
+        const recoilForce = this.weapon.damage()
+        TweenMax.to(this.mesh.position, {
+            duration: 0.05,
+            x: this.mesh.position.x - recoilForce,
+        })
+    }
+
+
+    tick(deltaTime) {
+        this.propeller.rotation.x += 0.2 + game.planeSpeed * deltaTime * .005
+
+        if (game.status === 'playing') {
+            game.planeSpeed = utils.normalize(ui.mousePos.x, -0.5, 0.5, world.planeMinSpeed, world.planeMaxSpeed)
+            let targetX = utils.normalize(ui.mousePos.x, -1, 1, -world.planeAmpWidth * 0.7, -world.planeAmpWidth)
+            let targetY = utils.normalize(ui.mousePos.y, -0.75, 0.75, world.planeDefaultHeight - world.planeAmpHeight, world.planeDefaultHeight + world.planeAmpHeight)
+
+            game.planeCollisionDisplacementX += game.planeCollisionSpeedX
+            targetX += game.planeCollisionDisplacementX
+
+            game.planeCollisionDisplacementY += game.planeCollisionSpeedY
+            targetY += game.planeCollisionDisplacementY
+
+            this.mesh.position.x += (targetX - this.mesh.position.x) * deltaTime * world.planeMoveSensivity
+            this.mesh.position.y += (targetY - this.mesh.position.y) * deltaTime * world.planeMoveSensivity
+
+            this.mesh.rotation.x = (this.mesh.position.y - targetY) * deltaTime * world.planeRotZSensivity
+            this.mesh.rotation.z = (targetY - this.mesh.position.y) * deltaTime * world.planeRotXSensivity
+
+            if (game.fpv) {
+                camera.position.y = this.mesh.position.y + 20
+                // camera.setRotationFromEuler(new THREE.Euler(-1.490248, -1.4124514, -1.48923231))
+                // camera.updateProjectionMatrix ()
+            } else {
+                camera.fov = utils.normalize(ui.mousePos.x, -30, 1, 40, 80)
+                camera.updateProjectionMatrix()
+                camera.position.y += (this.mesh.position.y - camera.position.y) * deltaTime * world.cameraSensivity
+            }
+        }
+
+        game.planeCollisionSpeedX += (0 - game.planeCollisionSpeedX) * deltaTime * 0.03;
+        game.planeCollisionDisplacementX += (0 - game.planeCollisionDisplacementX) * deltaTime * 0.01;
+        game.planeCollisionSpeedY += (0 - game.planeCollisionSpeedY) * deltaTime * 0.03;
+        game.planeCollisionDisplacementY += (0 - game.planeCollisionDisplacementY) * deltaTime * 0.01;
+
+        this.pilot.updateHairs(deltaTime)
+    }
+
+
+    gethit(position) {
+        const diffPos = this.mesh.position.clone().sub(position)
+        const d = diffPos.length()
+        game.planeCollisionSpeedX = 100 * diffPos.x / d
+        game.planeCollisionSpeedY = 100 * diffPos.y / d
+        ambientLight.intensity = 2
+        audioManager.play('airplane-crash')
+    }
+}
+
+function createAirplaneMesh() {
+    const mesh = new THREE.Object3D()
+
+    // Cabin
+    const matCabin = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, side: THREE.DoubleSide })
+
+    const frontUR = [40, 25, -25]
+    const frontUL = [40, 25, 25]
+    const frontLR = [40, -25, -25]
+    const frontLL = [40, -25, 25]
+    const backUR = [-40, 15, -5]
+    const backUL = [-40, 15, 5]
+    const backLR = [-40, 5, -5]
+    const backLL = [-40, 5, 5]
+
+    const vertices = new Float32Array(
+        utils.makeTetrahedron(frontUL, frontUR, frontLL, frontLR).concat(   // front
+            utils.makeTetrahedron(backUL, backUR, backLL, backLR)).concat(      // back
+                utils.makeTetrahedron(backUR, backLR, frontUR, frontLR)).concat(    // side
+                    utils.makeTetrahedron(backUL, backLL, frontUL, frontLL)).concat(    // side
+                        utils.makeTetrahedron(frontUL, backUL, frontUR, backUR)).concat(    // top
+                            utils.makeTetrahedron(frontLL, backLL, frontLR, backLR))            // bottom
+    )
+    const geomCabin = new THREE.BufferGeometry()
+    geomCabin.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+
+    const cabin = new THREE.Mesh(geomCabin, matCabin)
+    cabin.castShadow = true
+    cabin.receiveShadow = true
+    mesh.add(cabin)
+
+    // Engine
+
+    const geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
+    const matEngine = new THREE.MeshPhongMaterial({ color: colors.white, flatShading: true, });
+    const engine = new THREE.Mesh(geomEngine, matEngine);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    engine.position.x = 50;
+    engine.castShadow = true;
+    engine.receiveShadow = true;
+    mesh.add(engine);
+
+    // Tail Plane
+    const geomTailPlane = new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
+    const matTailPlane = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
+    const tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    tailPlane.position.set(-40, 20, 0);
+    tailPlane.castShadow = true;
+    tailPlane.receiveShadow = true;
+    mesh.add(tailPlane);
+
+    // Wings
+
+    const geomSideWing = new THREE.BoxGeometry(30, 5, 120, 1, 1, 1);
+    const matSideWing = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
+    const sideWing = new THREE.Mesh(geomSideWing, matSideWing);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    sideWing.position.set(0, 15, 0);
+    sideWing.castShadow = true;
+    sideWing.receiveShadow = true;
+    mesh.add(sideWing);
+
+    const geomWindshield = new THREE.BoxGeometry(3, 15, 20, 1, 1, 1);
+    const matWindshield = new THREE.MeshPhongMaterial({ color: colors.white, transparent: true, opacity: .3, flatShading: true, });;
+    const windshield = new THREE.Mesh(geomWindshield, matWindshield);
+    windshield.position.set(20, 27, 0);
+
+    windshield.castShadow = true;
+    windshield.receiveShadow = true;
+
+    mesh.add(windshield);
+
+    const geomPropeller = new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+    geomPropeller.attributes.position.array[4 * 3 + 1] -= 5
+    geomPropeller.attributes.position.array[4 * 3 + 2] += 5
+    geomPropeller.attributes.position.array[5 * 3 + 1] -= 5
+    geomPropeller.attributes.position.array[5 * 3 + 2] -= 5
+    geomPropeller.attributes.position.array[6 * 3 + 1] += 5
+    geomPropeller.attributes.position.array[6 * 3 + 2] += 5
+    geomPropeller.attributes.position.array[7 * 3 + 1] += 5
+    geomPropeller.attributes.position.array[7 * 3 + 2] -= 5
+    const matPropeller = new THREE.MeshPhongMaterial({ color: colors.brown, flatShading: true, });
+    const propeller = new THREE.Mesh(geomPropeller, matPropeller);
+
+    propeller.castShadow = true;
+    propeller.receiveShadow = true;
+
+    const geomBlade = new THREE.BoxGeometry(1, 80, 10, 1, 1, 1);
+    const matBlade = new THREE.MeshPhongMaterial({ color: colors.brownDark, flatShading: true, });
+    const blade1 = new THREE.Mesh(geomBlade, matBlade);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    blade1.position.set(8, 0, 0);
+
+    blade1.castShadow = true;
+    blade1.receiveShadow = true;
+
+    const blade2 = blade1.clone();
+    blade2.rotation.x = Math.PI / 2;
+
+    blade2.castShadow = true;
+    blade2.receiveShadow = true;
+
+    propeller.add(blade1);
+    propeller.add(blade2);
+    propeller.position.set(60, 0, 0);
+    mesh.add(propeller);
+
+    const wheelProtecGeom = new THREE.BoxGeometry(30, 15, 10, 1, 1, 1);
+    const wheelProtecMat = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
+    const wheelProtecR = new THREE.Mesh(wheelProtecGeom, wheelProtecMat);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    wheelProtecR.position.set(25, -20, 25);
+    mesh.add(wheelProtecR);
+
+    const wheelTireGeom = new THREE.BoxGeometry(24, 24, 4);
+    const wheelTireMat = new THREE.MeshPhongMaterial({ color: colors.brownDark, flatShading: true, });
+    const wheelTireR = new THREE.Mesh(wheelTireGeom, wheelTireMat);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    wheelTireR.position.set(25, -28, 25);
+
+    const wheelAxisGeom = new THREE.BoxGeometry(10, 10, 6);
+    const wheelAxisMat = new THREE.MeshPhongMaterial({ color: colors.brown, flatShading: true, });
+    const wheelAxis = new THREE.Mesh(wheelAxisGeom, wheelAxisMat);
+    wheelTireR.add(wheelAxis);
+
+    mesh.add(wheelTireR);
+
+    const wheelProtecL = wheelProtecR.clone();
+    wheelProtecL.position.z = -wheelProtecR.position.z;
+    mesh.add(wheelProtecL);
+
+    const wheelTireL = wheelTireR.clone();
+    wheelTireL.position.z = -wheelTireR.position.z;
+    mesh.add(wheelTireL);
+
+    const wheelTireB = wheelTireR.clone();
+    wheelTireB.scale.set(.5, .5, .5);
+    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+    wheelTireB.position.set(-35, -5, 0);
+    mesh.add(wheelTireB);
+
+    const suspensionGeom = new THREE.BoxGeometry(4, 20, 4);
+    suspensionGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 10, 0))
+    const suspensionMat = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
+    const suspension = new THREE.Mesh(suspensionGeom, suspensionMat);
+    suspension.position.set(-35, -5, 0);
+    suspension.rotation.z = -.3;
+    mesh.add(suspension)
+
+    const pilot = new Pilot()
+    pilot.mesh.position.set(5, 27, 0)
+    mesh.add(pilot.mesh)
+
+    mesh.castShadow = true
+    mesh.receiveShadow = true
+
+    return [mesh, propeller, pilot]
+}
+
+class Pilot {
+    constructor() {
+        this.mesh = new THREE.Object3D()
+        this.angleHairs = 0
+
+        const bodyGeom = new THREE.BoxGeometry(15, 15, 15)
+        const bodyMat = new THREE.MeshPhongMaterial({
+            color: colors.brown,
+            flatShading: true,
+        })
+        const body = new THREE.Mesh(bodyGeom, bodyMat)
+        body.position.set(2, -12, 0)
+        this.mesh.add(body)
+
+        const faceGeom = new THREE.BoxGeometry(10, 10, 10)
+        const faceMat = new THREE.MeshLambertMaterial({ color: colors.pink })
+        const face = new THREE.Mesh(faceGeom, faceMat)
+        this.mesh.add(face)
+
+        const hairGeom = new THREE.BoxGeometry(4, 4, 4)
+        const hairMat = new THREE.MeshLambertMaterial({ color: colors.brown })
+        const hair = new THREE.Mesh(hairGeom, hairMat)
+        hair.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 2, 0))
+        const hairs = new THREE.Object3D()
+
+        this.hairsTop = new THREE.Object3D()
+
+        for (let i = 0; i < 12; i++) {
+            const h = hair.clone();
+            const col = i % 3;
+            const row = Math.floor(i / 3);
+            const startPosZ = -4;
+            const startPosX = -4;
+            h.position.set(startPosX + row * 4, 0, startPosZ + col * 4);
+            h.geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, 1, 1));
+            this.hairsTop.add(h);
+        }
+        hairs.add(this.hairsTop);
+
+        const hairSideGeom = new THREE.BoxGeometry(12, 4, 2);
+        hairSideGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(-6, 0, 0));
+        const hairSideR = new THREE.Mesh(hairSideGeom, hairMat);
+        const hairSideL = hairSideR.clone();
+        hairSideR.position.set(8, -2, 6);
+        hairSideL.position.set(8, -2, -6);
+        hairs.add(hairSideR);
+        hairs.add(hairSideL);
+
+        const hairBackGeom = new THREE.BoxGeometry(2, 8, 10);
+        const hairBack = new THREE.Mesh(hairBackGeom, hairMat);
+        hairBack.position.set(-1, -4, 0)
+        hairs.add(hairBack);
+        hairs.position.set(-5, 5, 0);
+
+        this.mesh.add(hairs);
+
+        const glassGeom = new THREE.BoxGeometry(5, 5, 5);
+        const glassMat = new THREE.MeshLambertMaterial({ color: colors.brown });
+        const glassR = new THREE.Mesh(glassGeom, glassMat);
+        glassR.position.set(6, 0, 3);
+        const glassL = glassR.clone();
+        glassL.position.z = -glassR.position.z
+
+        const glassAGeom = new THREE.BoxGeometry(11, 1, 11);
+        const glassA = new THREE.Mesh(glassAGeom, glassMat);
+        this.mesh.add(glassR);
+        this.mesh.add(glassL);
+        this.mesh.add(glassA);
+
+        const earGeom = new THREE.BoxGeometry(2, 3, 2);
+        const earL = new THREE.Mesh(earGeom, faceMat);
+        earL.position.set(0, 0, -6);
+        const earR = earL.clone();
+        earR.position.set(0, 0, 6);
+        this.mesh.add(earL);
+        this.mesh.add(earR);
+    }
+
+
+    updateHairs(deltaTime) {
+        const hairs = this.hairsTop.children
+        const l = hairs.length
+        for (let i = 0; i < l; i++) {
+            const h = hairs[i]
+            h.scale.y = .75 + Math.cos(this.angleHairs + i / 3) * .25
+        }
+        this.angleHairs += game.speed * deltaTime * 40
+    }
+}
+
 function animate() {
     requestAnimationFrame(animate)
 
@@ -334,7 +790,7 @@ function init() {
     createLand()
     createForest()
     createSky()
-
+    createPlane()
 
     animate()
 
