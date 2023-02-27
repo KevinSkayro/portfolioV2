@@ -38,6 +38,8 @@ function createScene() {
     })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.shadowMap.enabled = true
+
 
     //RESPONSIVE LISTENER
     window.addEventListener('resize', handleWindowResize, false)
@@ -84,8 +86,9 @@ function createLand() {
 
     })
     earthGeometry = new THREE.Mesh(landGeometry, material)
-    earthGeometry.position.y = offSet
     earthGeometry.receiveShadow = true
+    earthGeometry.position.y = offSet
+
     scene.add(earthGeometry)
 }
 
@@ -215,16 +218,16 @@ function createFlower() {
         color: petalColor
     })
     console.log(petalGeometry)
-    let positionAttribute = petalGeometry.attributes.position;
+    let positionAttribute = petalGeometry.attributes.position
 
     // Modify the y-coordinates of some vertices by updating the position attribute
-    positionAttribute.setY(5, positionAttribute.getY(5) - 4);
-    positionAttribute.setY(4, positionAttribute.getY(4) - 4);
-    positionAttribute.setY(7, positionAttribute.getY(7) + 4);
-    positionAttribute.setY(6, positionAttribute.getY(6) + 4);
+    positionAttribute.setY(5, positionAttribute.getY(5) - 4)
+    positionAttribute.setY(4, positionAttribute.getY(4) - 4)
+    positionAttribute.setY(7, positionAttribute.getY(7) + 4)
+    positionAttribute.setY(6, positionAttribute.getY(6) + 4)
 
     // Mark the position attribute as needing an update
-    positionAttribute.needsUpdate = true;
+    positionAttribute.needsUpdate = true
 
 
     petalGeometry.translate(12.5, 0, 3)
