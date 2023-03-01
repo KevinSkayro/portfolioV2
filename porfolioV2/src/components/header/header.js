@@ -8,7 +8,15 @@ let scene,
     earthGeometry,
     forestGeometry,
     skyGeometry,
-    airplane
+    airplane,
+    newTime = new Date().getTime(),
+    oldTime = new Date().getTime(),
+    game = {
+        status: 'playing',
+    },
+    ui
+
+
 const colors = {
     red: 0xf25346,
     yellow: 0xedeb27,
@@ -772,9 +780,41 @@ class Pilot {
     }
 }
 
+class SceneManager {
+    constructor() {
+        this.list = new Set()
+    }
+
+    add(obj) {
+        scene.add(obj.mesh)
+        this.list.add(obj)
+    }
+
+    remove(obj) {
+        scene.remove(obj.mesh)
+        this.list.delete(obj)
+    }
+
+    clear() {
+        for (const entry of this.list) {
+            this.remove(entry)
+        }
+    }
+
+    tick(deltaTime) {
+        for (const entry of this.list) {
+            if (entry.tick) {
+                entry.tick(deltaTime)
+            }
+        }
+    }
+}
+
+const sceneManager = new SceneManager()
+
 function animate() {
     requestAnimationFrame(animate)
-
+    airplane.propeller.rotation.x += 0.3;
     earthGeometry.rotation.z += 0.005
     forestGeometry.rotation.z += 0.005
     skyGeometry.rotation.z += 0.003
