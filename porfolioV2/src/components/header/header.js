@@ -9,12 +9,13 @@ let scene,
     forestGeometry,
     skyGeometry,
     airplane,
-    newTime = new Date().getTime(),
-    oldTime = new Date().getTime(),
     game = {
         status: 'playing',
+        speed: 0.00035,
+        baseSpeed: 0.00035,
     },
-    ui
+    newTime = new Date().getTime(),
+    oldTime = new Date().getTime()
 
 
 const colors = {
@@ -437,96 +438,6 @@ class Airplane {
         this.mesh = mesh
         this.propeller = propeller
         this.pilot = pilot
-        this.weapon = null
-        this.lastShot = 0
-    }
-
-
-    equipWeapon(weapon) {
-        if (this.weapon) {
-            this.mesh.remove(this.weapon.mesh)
-        }
-        this.weapon = weapon
-        if (this.weapon) {
-            this.mesh.add(this.weapon.mesh)
-        }
-    }
-
-
-    shoot() {
-        if (!this.weapon) {
-            return
-        }
-
-        // rate-limit the shooting
-        const nowTime = new Date().getTime() / 1000
-        const ready = nowTime - this.lastShot > this.weapon.downtime()
-        if (!ready) {
-            return
-        }
-        this.lastShot = nowTime
-
-        // fire the shot
-        let direction = new THREE.Vector3(10, 0, 0)
-        direction.applyEuler(airplane.mesh.rotation)
-        this.weapon.shoot(direction)
-
-        // recoil airplane
-        const recoilForce = this.weapon.damage()
-        TweenMax.to(this.mesh.position, {
-            duration: 0.05,
-            x: this.mesh.position.x - recoilForce,
-        })
-    }
-
-
-    tick(deltaTime) {
-        this.propeller.rotation.x += 0.2 + game.planeSpeed * deltaTime * .005
-
-        if (game.status === 'playing') {
-            game.planeSpeed = utils.normalize(ui.mousePos.x, -0.5, 0.5, world.planeMinSpeed, world.planeMaxSpeed)
-            let targetX = utils.normalize(ui.mousePos.x, -1, 1, -world.planeAmpWidth * 0.7, -world.planeAmpWidth)
-            let targetY = utils.normalize(ui.mousePos.y, -0.75, 0.75, world.planeDefaultHeight - world.planeAmpHeight, world.planeDefaultHeight + world.planeAmpHeight)
-
-            game.planeCollisionDisplacementX += game.planeCollisionSpeedX
-            targetX += game.planeCollisionDisplacementX
-
-            game.planeCollisionDisplacementY += game.planeCollisionSpeedY
-            targetY += game.planeCollisionDisplacementY
-
-            this.mesh.position.x += (targetX - this.mesh.position.x) * deltaTime * world.planeMoveSensivity
-            this.mesh.position.y += (targetY - this.mesh.position.y) * deltaTime * world.planeMoveSensivity
-
-            this.mesh.rotation.x = (this.mesh.position.y - targetY) * deltaTime * world.planeRotZSensivity
-            this.mesh.rotation.z = (targetY - this.mesh.position.y) * deltaTime * world.planeRotXSensivity
-
-            if (game.fpv) {
-                camera.position.y = this.mesh.position.y + 20
-                // camera.setRotationFromEuler(new THREE.Euler(-1.490248, -1.4124514, -1.48923231))
-                // camera.updateProjectionMatrix ()
-            } else {
-                camera.fov = utils.normalize(ui.mousePos.x, -30, 1, 40, 80)
-                camera.updateProjectionMatrix()
-                camera.position.y += (this.mesh.position.y - camera.position.y) * deltaTime * world.cameraSensivity
-            }
-        }
-
-        game.planeCollisionSpeedX += (0 - game.planeCollisionSpeedX) * deltaTime * 0.03;
-        game.planeCollisionDisplacementX += (0 - game.planeCollisionDisplacementX) * deltaTime * 0.01;
-        game.planeCollisionSpeedY += (0 - game.planeCollisionSpeedY) * deltaTime * 0.03;
-        game.planeCollisionDisplacementY += (0 - game.planeCollisionDisplacementY) * deltaTime * 0.01;
-
-        this.pilot.updateHairs(deltaTime)
-    }
-
-
-    gethit(position) {
-        const diffPos = this.mesh.position.clone().sub(position)
-        const d = diffPos.length()
-        game.planeCollisionSpeedX = 100 * diffPos.x / d
-        game.planeCollisionSpeedY = 100 * diffPos.y / d
-        ambientLight.intensity = 2
-        audioManager.play('airplane-crash')
     }
 }
 
@@ -566,7 +477,7 @@ function createAirplaneMesh() {
     const geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
     const matEngine = new THREE.MeshPhongMaterial({ color: colors.white, flatShading: true, });
     const engine = new THREE.Mesh(geomEngine, matEngine);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     engine.position.x = 50;
     engine.castShadow = true;
     engine.receiveShadow = true;
@@ -576,7 +487,7 @@ function createAirplaneMesh() {
     const geomTailPlane = new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
     const matTailPlane = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
     const tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     tailPlane.position.set(-40, 20, 0);
     tailPlane.castShadow = true;
     tailPlane.receiveShadow = true;
@@ -587,7 +498,7 @@ function createAirplaneMesh() {
     const geomSideWing = new THREE.BoxGeometry(30, 5, 120, 1, 1, 1);
     const matSideWing = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
     const sideWing = new THREE.Mesh(geomSideWing, matSideWing);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     sideWing.position.set(0, 15, 0);
     sideWing.castShadow = true;
     sideWing.receiveShadow = true;
@@ -621,7 +532,7 @@ function createAirplaneMesh() {
     const geomBlade = new THREE.BoxGeometry(1, 80, 10, 1, 1, 1);
     const matBlade = new THREE.MeshPhongMaterial({ color: colors.brownDark, flatShading: true, });
     const blade1 = new THREE.Mesh(geomBlade, matBlade);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     blade1.position.set(8, 0, 0);
 
     blade1.castShadow = true;
@@ -641,14 +552,14 @@ function createAirplaneMesh() {
     const wheelProtecGeom = new THREE.BoxGeometry(30, 15, 10, 1, 1, 1);
     const wheelProtecMat = new THREE.MeshPhongMaterial({ color: colors.red, flatShading: true, });
     const wheelProtecR = new THREE.Mesh(wheelProtecGeom, wheelProtecMat);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     wheelProtecR.position.set(25, -20, 25);
     mesh.add(wheelProtecR);
 
     const wheelTireGeom = new THREE.BoxGeometry(24, 24, 4);
     const wheelTireMat = new THREE.MeshPhongMaterial({ color: colors.brownDark, flatShading: true, });
     const wheelTireR = new THREE.Mesh(wheelTireGeom, wheelTireMat);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     wheelTireR.position.set(25, -28, 25);
 
     const wheelAxisGeom = new THREE.BoxGeometry(10, 10, 6);
@@ -668,7 +579,7 @@ function createAirplaneMesh() {
 
     const wheelTireB = wheelTireR.clone();
     wheelTireB.scale.set(.5, .5, .5);
-    //Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ
+
     wheelTireB.position.set(-35, -5, 0);
     mesh.add(wheelTireB);
 
@@ -777,40 +688,9 @@ class Pilot {
             h.scale.y = .75 + Math.cos(this.angleHairs + i / 3) * .25
         }
         this.angleHairs += game.speed * deltaTime * 40
+
     }
 }
-
-class SceneManager {
-    constructor() {
-        this.list = new Set()
-    }
-
-    add(obj) {
-        scene.add(obj.mesh)
-        this.list.add(obj)
-    }
-
-    remove(obj) {
-        scene.remove(obj.mesh)
-        this.list.delete(obj)
-    }
-
-    clear() {
-        for (const entry of this.list) {
-            this.remove(entry)
-        }
-    }
-
-    tick(deltaTime) {
-        for (const entry of this.list) {
-            if (entry.tick) {
-                entry.tick(deltaTime)
-            }
-        }
-    }
-}
-
-const sceneManager = new SceneManager()
 
 function animate() {
     requestAnimationFrame(animate)
@@ -818,6 +698,11 @@ function animate() {
     earthGeometry.rotation.z += 0.005
     forestGeometry.rotation.z += 0.005
     skyGeometry.rotation.z += 0.003
+    newTime = new Date().getTime()
+    const deltaTime = newTime - oldTime
+    oldTime = newTime
+    const pilot = new Pilot()
+    pilot.updateHairs(deltaTime)
     renderer.render(scene, camera)
 }
 
