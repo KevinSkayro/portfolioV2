@@ -16,6 +16,9 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "path": "^0.12.7",
     "pinia": "^2.0.32",
+    "postcss-nested": "^6.0.0",
+    "sass": "^1.56.2",
+    "sass-loader": "^13.2.0",
     "three": "^0.150.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"

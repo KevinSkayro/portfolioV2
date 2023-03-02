@@ -1,4 +1,4 @@
-import './header.css'
+import './game.css'
 import * as THREE from 'three'
 
 let scene,
