@@ -8,19 +8,25 @@
                 <h1 class="header-text">I'm a Front-end Developer</h1>
                 <h2 class="header-subtext">I build websites and web applications.</h2>
                 <a data-goto-btn class="explore-btn" href="#projects">
-                    SEE PROJECTS <i class="fas fa-arrow-right" id="btn-arrow"></i>
+                    SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
                 </a>
             </div>
       </header>
 </template>
 
 <script>
-
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+library.add(faArrowRight)
 
 export default {
     created: () => {
         import('@src/components/home/game.js');
     },
+    components: {
+        'font-awesome-icon': FontAwesomeIcon
+    }
 }
 </script>
 <style lang="scss" scoped>
