@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { useIsMobile } from '@src/composables/generalMethods.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
@@ -22,7 +23,11 @@ library.add(faArrowRight)
 
 export default {
     created: () => {
-        import('@src/components/home/game.js');
+        if(!useIsMobile()){
+            import('@src/components/home/game.js');
+        } else {
+            console.log('mobile');
+        }
     },
     components: {
         'font-awesome-icon': FontAwesomeIcon
