@@ -2,7 +2,7 @@
     <div class="menu_container">
         <menu class="menu">
         
-            <button class="menu__item" style="--bgColorItem: #f54888;">
+            <RouterLink to="/projects" class="menu_item" style="--bgColorItem: #f54888;" >
                 <svg class="icon" 
                 viewBox="0 0 32 32">
             <path class="st0" d="M26,27H6c-1.1,0-2-0.9-2-2V12c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v13C28,26.1,27.1,27,26,27z"/>
@@ -12,36 +12,36 @@
             <path class="st0" d="M9.3,10c0.9-2.9,3.5-5,6.7-5c3.2,0,5.8,2.1,6.7,5"/>
             </svg>
 
-            </button>
+            </RouterLink>
 
-            <button class="menu__item" style="--bgColorItem: #4343f5;" >
+            <button class="menu_item" style="--bgColorItem: #4343f5;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
             </button>
 
-            <button class="menu__item active" style="--bgColorItem: #ff8c00;" >
+            <a href="/" class="menu_item active" style="--bgColorItem: #ff8c00;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-            </button>
+            </a>
 
-            <button class="menu__item" style="--bgColorItem: #e0b115;" > 
+            <button class="menu_item" style="--bgColorItem: #e0b115;" > 
                 <svg  viewBox="0 0 24 24" class="icon">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             </button>
 
-            <button class="menu__item" style="--bgColorItem:#65ddb7;">
+            <button class="menu_item" style="--bgColorItem:#65ddb7;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
             </button>
 
-            <div class="menu__border"></div>
+            <div class="menu_border"></div>
 
         </menu>
     </div>
@@ -57,14 +57,15 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
 export default {
     mounted() {
         // Original designed by: Mauricio Bucardo
         // Original image: https://dribbble.com/shots/5619509-Animated-Tab-Bar
 
         const menu = document.querySelector(".menu_container .menu")
-        const menuItems = menu.querySelectorAll(".menu__item")
-        const menuBorder = menu.querySelector(".menu__border")
+        const menuItems = menu.querySelectorAll(".menu_item")
+        const menuBorder = menu.querySelector(".menu_border")
         let activeItem = menu.querySelector(".active")
 
         function clickItem(item, index) {
@@ -144,7 +145,7 @@ html *::after {
     border-radius: 1em;
 }
 
-.menu__item{
+.menu_item{
     
     all: unset;
     flex-grow: 1;
@@ -161,7 +162,7 @@ html *::after {
     
 }
 
-.menu__item::before{
+.menu_item::before{
     
     content: "";
     z-index: -1;
@@ -175,13 +176,13 @@ html *::after {
 }
 
 
-.menu__item.active {
+.menu_item.active {
 
     transform: translate3d(0, -.8em , 0);
 
 }
 
-.menu__item.active::before{
+.menu_item.active::before{
     
     transform: scale(1);
     background-color: var(--bgColorItem);
@@ -202,7 +203,7 @@ html *::after {
     
 }
 
-.menu__item.active .icon {
+.menu_item.active .icon {
 
     animation: strok 1.5s reverse;
     
@@ -218,7 +219,7 @@ html *::after {
 
 }
 
-.menu__border{
+.menu_border{
 
     left: 0;
     bottom: 99%;
