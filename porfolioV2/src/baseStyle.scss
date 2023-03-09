@@ -1,8 +1,8 @@
-.hero-container {
+.hero_container {
     height:100vh;
     overflow: hidden;
 
-    .fullscreen-canvas-wrap {
+    .fullscreen_wrap {
         position: absolute;
         top: 0;
         left: 0;
@@ -11,7 +11,7 @@
         overflow: hidden;
         z-index: -1;
     }
-    .hero-content {
+    .hero_content {
         height: 100vh;
         display: flex;
         flex-direction: column;
@@ -20,19 +20,19 @@
         background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.80) 70%, rgba(0, 0, 0, 0.60) 100%);
         color: #fff;
 
-        .header-text {
+        .header_text {
             font-size: 3rem;
             font-weight: 600;
             text-align: center;
         }
 
-        .header-subtext {
+        .header_subtext {
             margin-top: 1rem;
             font-size: 1.5rem;
             text-align: center;
         }
 
-        .explore-btn {
+        .explore_btn {
             color: #fff;
             text-decoration: none;
             margin-top: 2rem;
@@ -43,7 +43,7 @@
             backdrop-filter: blur(0.3rem);
         }
 
-        .explore-btn:hover {
+        .explore_btn:hover {
             background: #f21137;
             border: 1px solid #f21137;
             cursor: pointer;

@@ -14,32 +14,32 @@
 
             </RouterLink>
 
-            <button class="menu_item" style="--bgColorItem: #4343f5;" >
+            <RouterLink to="/tech" class="menu_item" style="--bgColorItem: #4343f5;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
-            </button>
+            </RouterLink>
 
-            <a href="/" class="menu_item active" style="--bgColorItem: #ff8c00;" >
+            <RouterLink to="/" class="menu_item active" style="--bgColorItem: #ff8c00;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-            </a>
+            </RouterLink>
 
-            <button class="menu_item" style="--bgColorItem: #e0b115;" > 
+            <RouterLink to="/about" class="menu_item" style="--bgColorItem: #e0b115;" > 
                 <svg  viewBox="0 0 24 24" class="icon">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-            </button>
+            </RouterLink>
 
-            <button class="menu_item" style="--bgColorItem:#65ddb7;">
+            <RouterLink to="/contact" class="menu_item" style="--bgColorItem:#65ddb7;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
-            </button>
+            </RouterLink>
 
             <div class="menu_border"></div>
 
