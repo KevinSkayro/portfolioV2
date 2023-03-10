@@ -1,3 +1,11 @@
+:root {
+    --orange: #ff8c00;
+    --pink: #f54888;
+    --purple: #4343f5;
+    --yellow: #e0b115;
+    --lightBlue: #65ddb7;
+    --darkGrey: #1d1d27;
+}
 .hero_container {
     height:100vh;
     overflow: hidden;
@@ -49,4 +57,13 @@
             cursor: pointer;
         }
     }
+}
+
+.about-container h2,
+.tech-container h2,
+.projects-container h2,
+.contact-container h2 {
+  font-size: 3rem;
+  text-align: center;
+  line-height: 3rem;
 }

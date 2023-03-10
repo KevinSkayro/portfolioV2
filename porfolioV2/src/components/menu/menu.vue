@@ -2,7 +2,7 @@
     <div class="menu_container">
         <menu class="menu">
         
-            <RouterLink to="/projects" class="menu_item" style="--bgColorItem: #f54888;" >
+            <RouterLink to="/projects" class="menu_item" style="--bgColorItem: #ff8c00;" >
                 <svg class="icon" 
                 viewBox="0 0 32 32">
             <path class="st0" d="M26,27H6c-1.1,0-2-0.9-2-2V12c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v13C28,26.1,27.1,27,26,27z"/>
@@ -14,13 +14,13 @@
 
             </RouterLink>
 
-            <RouterLink to="/tech" class="menu_item" style="--bgColorItem: #4343f5;" >
+            <RouterLink to="/tech" class="menu_item" style="--bgColorItem:  #f54888 ;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
             </RouterLink>
 
-            <RouterLink to="/" class="menu_item active" style="--bgColorItem: #ff8c00;" >
+            <RouterLink to="/" class="menu_item active" style="--bgColorItem: #4343f5;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -112,7 +112,6 @@ export default {
 html {
 
     box-sizing: border-box;
-    --bgColorMenu : #1d1d27;
     --duration: .7s;    
 
 }
@@ -141,7 +140,7 @@ html *::after {
     bottom: 10px;
     align-items: center;
     justify-content: center;
-    background-color: var(--bgColorMenu);
+    background-color: var(--darkGrey);
     border-radius: 1em;
 }
 
@@ -228,7 +227,7 @@ html *::after {
     position: absolute;
     clip-path: url(#menu);
     will-change: transform;
-    background-color: var(--bgColorMenu);
+    background-color: var(--darkGrey);
     transition: transform var(--timeOut , var(--duration));
     
 }
