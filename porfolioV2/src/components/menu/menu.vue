@@ -68,10 +68,9 @@ export default {
         const menuBorder = menu.querySelector(".menu_border")
         let activeItem = menu.querySelector(".active")
 
-        function clickItem(item, index) {
+        function clickItem(item) {
 
             menu.style.removeProperty("--timeOut")
-            
             if (activeItem == item) return
             
             if (activeItem) {
@@ -104,6 +103,29 @@ export default {
             offsetMenuBorder(activeItem, menuBorder)
             menu.style.setProperty("--timeOut", "none")
         })
+
+        // Change active item on page load based on url
+        function menuOnLoad (parameters) {
+            switch (parameters) {
+                case "projects":
+                    clickItem(menuItems[0])
+                    break
+                case "tech":
+                    clickItem(menuItems[1])
+                    break
+                case "about":
+                    clickItem(menuItems[3])
+                    break
+                case "contact":
+                    clickItem(menuItems[4])
+                    break
+                default:
+                    clickItem(menuItems[2])
+                    break
+            }
+        }
+        menuOnLoad(window.location.pathname.split("/").pop())
+
     }
 }
 </script>
