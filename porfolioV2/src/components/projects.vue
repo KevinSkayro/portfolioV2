@@ -142,7 +142,7 @@ export default {
                     technologies: ["HTML", "CSS", "JavaScript", "PHP", "mySQL"],
                     cardPreview: "login-app.gif",
                     popupPreview: "../assets/login-app.gif",
-                },
+                }
             ]
         }
     }
@@ -160,6 +160,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 2rem 0 6rem 0;
   }
   .projects-inner-container {
     width: 1000px;
@@ -380,4 +381,50 @@ export default {
     background: #f21137;
   }
   /*popup style end*/
+
+
+  @media screen and (max-width: 1280px) {
+    .projects-inner-container {
+      justify-content: center;
+    }
+  }
+  @media screen and (max-width: 1100px) {
+    .popup-content-container {
+      flex-direction: column-reverse;
+    }
+    .project-preview {
+      width: 100%;
+      border-radius: 0 0 1rem 1rem;
+    }
+    .project-btns-container {
+      width: 100%;
+      border-radius: 1rem 1rem 0 0;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    .projects-inner-container {
+      max-width: 80%;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    .projects-inner-container {
+      max-width: 90%;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .about-inner-container {
+      max-width: 90%;
+    }
+    .contact-inner-container {
+      max-width: 95%;
+    }
+  }
+  @media screen and (max-width: 414px) {
+    .about-container h2,
+    .tech-container h2,
+    .projects-container h2,
+    .contact-container h2 {
+      font-size: 2.5rem;
+    }
+  }
 </style>
