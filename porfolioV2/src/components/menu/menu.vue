@@ -20,7 +20,7 @@
                 </svg>
             </RouterLink>
 
-            <RouterLink to="/" class="menu_item active" style="--bgColorItem: #4343f5;" >
+            <RouterLink to="/" class="menu_item" style="--bgColorItem: #4343f5;" >
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -91,7 +91,7 @@ export default {
 
         }
 
-        offsetMenuBorder(activeItem, menuBorder)
+        
 
         menuItems.forEach((item, index) => {
 
@@ -100,28 +100,34 @@ export default {
         })
 
         window.addEventListener("resize", () => {
+
             offsetMenuBorder(activeItem, menuBorder)
             menu.style.setProperty("--timeOut", "none")
+            
         })
 
         // Change active item on page load based on url
         function menuOnLoad (parameters) {
             switch (parameters) {
                 case "projects":
-                    clickItem(menuItems[0])
+                    activeOnLoad(menuItems[0])
                     break
                 case "tech":
-                    clickItem(menuItems[1])
+                    activeOnLoad(menuItems[1])
                     break
                 case "about":
-                    clickItem(menuItems[3])
+                    activeOnLoad(menuItems[3])
                     break
                 case "contact":
-                    clickItem(menuItems[4])
+                    activeOnLoad(menuItems[4])
                     break
                 default:
-                    clickItem(menuItems[2])
+                    activeOnLoad(menuItems[2])
                     break
+            }
+            function activeOnLoad (item) {
+                item.classList.add("active")
+                offsetMenuBorder(item, menuBorder)
             }
         }
         menuOnLoad(window.location.pathname.split("/").pop())
