@@ -150,26 +150,26 @@ export default {
 </script>
 
 <style lang="scss" >
-  #projects {
+#projects {
     background: #fff;
     overflow-y: scroll;
     height: 100vh;
-  }
-  .projects-container {
+}
+.projects-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 2rem 0 6rem 0;
-  }
-  .projects-inner-container {
+}
+.projects-inner-container {
     width: 1000px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 2rem 0;
-  }
-  .project-card {
+}
+.project-card {
     position: relative;
     width: 300px;
     height: 350px;
@@ -179,27 +179,27 @@ export default {
     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
     overflow: hidden;
-  }
-  #card-1 {
+}
+#card-1 {
     background: url(../assets/weather-app-preview.gif) bottom left/100% no-repeat;
-  }
-  #card-2 {
+}
+#card-2 {
     background: url(../assets/todo-app-preview.gif) top left/100% no-repeat;
-  }
-  #card-3 {
+}
+#card-3 {
     background: url(../assets/login-app-preview.gif) top left/100% no-repeat;
-  }
-  
-  .project-card:hover {
+}
+
+.project-card:hover {
     cursor: pointer;
-  }
-  .project-card:hover .preview-btn,
-  .touch-card .preview-btn {
+}
+.project-card:hover .preview-btn,
+.touch-card .preview-btn {
     opacity: 1;
     transform: translateY(calc(150px - 1.5rem)) scale(1);
-  }
-  .project-card:before,
-  .project-card:after {
+}
+.project-card:before,
+.project-card:after {
     content: "";
     position: absolute;
     z-index: -1;
@@ -212,8 +212,8 @@ export default {
     right: 0;
     -moz-border-radius: 100px / 10px;
     border-radius: 1rem;
-  }
-  .project-card:after {
+}
+.project-card:after {
     right: 10px;
     left: auto;
     -webkit-transform: skew(8deg) rotate(3deg);
@@ -221,8 +221,8 @@ export default {
     -ms-transform: skew(8deg) rotate(3deg);
     -o-transform: skew(8deg) rotate(3deg);
     transform: skew(8deg) rotate(3deg);
-  }
-  .overlay {
+}
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -231,13 +231,13 @@ export default {
     border-radius: 1rem;
     background: rgba(0, 0, 0, 0);
     transition: background 0.5s ease;
-  }
-  .project-card:hover .overlay,
-  .touch-card .overlay {
+}
+.project-card:hover .overlay,
+.touch-card .overlay {
     display: block;
     background: rgba(0, 0, 0, 0.3);
-  }
-  .preview-btn {
+}
+.preview-btn {
     border: none;
     width: 8rem;
     height: 3rem;
@@ -247,13 +247,13 @@ export default {
     transition: 0.35s ease;
     transform: translateY(0) scale(0);
     left: calc(50% - 4rem);
-  }
-  
-  .preview-btn:hover {
+}
+
+.preview-btn:hover {
     cursor: pointer;
     background: #f21137;
-  }
-  .project-title {
+}
+.project-title {
     position: relative;
     bottom: calc(-300px + 3rem);
     right: 0;
@@ -265,21 +265,21 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .project-title span {
+}
+.project-title span {
     font-size: 1.3rem;
-  }
-  /*popup style start*/
-  
-  .popup.active {
+}
+/*popup style start*/
+
+.popup.active {
     opacity: 1;
     pointer-events: all;
     transform: translate(-50%, -50%) scale(1);
     -webkit-transform: translate(-50%, -50%) scale(1);
     -moz-transform: translate(-50%, -50%) scale(1);
     -o-transform: translate(-50%, -50%) scale(1);
-  }
-  .popup {
+}
+.popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -295,17 +295,17 @@ export default {
     -o-transform: translate(-50%, -50%) scale(0);
     transition: 0.3s ease-in-out;
     z-index: 3;
-  }
-  .close-popup-container {
+}
+.close-popup-container {
     /* padding: 0.5rem 1rem; */
     font-size: 1.5rem;
     text-align: end;
-  }
-  .fa-times:hover {
+}
+.fa-times:hover {
     cursor: pointer;
     color: #f21137;
-  }
-  .popup-overlay {
+}
+.popup-overlay {
     position: fixed;
     /* opacity: 0; */
     top: 0;
@@ -317,60 +317,60 @@ export default {
     transform: scale(0);
     transition: 0.3s ease-in-out;
     z-index: 2;
-  }
-  .popup-overlay.active {
+}
+.popup-overlay.active {
     pointer-events: all;
     transform: scale(1);
-  }
-  .popup-content {
+}
+.popup-content {
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-  .popup-content-container {
+}
+.popup-content-container {
     width: 100%;
     height: 100%;
     display: flex;
-  }
-  .project-preview {
+}
+.project-preview {
     width: 70%;
     border-radius: 1rem 0 0 1rem;
     overflow: hidden;
-  }
-  .preview-1 img,
-  .preview-2 img,
-  .preview-3 img {
+}
+.preview-1 img,
+.preview-2 img,
+.preview-3 img {
     width: 100%;
-  }
-  .project-btns-container {
+}
+.project-btns-container {
     width: 30%;
     border-radius: 0 1rem 1rem 0;
     padding: 0.8rem 1rem;
-  }
-  .btns-container {
+}
+.btns-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: calc(100% - 24px);
     /* align-items: center; */
-  }
-  .popup-text-container {
+}
+.popup-text-container {
     padding: 0.5rem 2rem;
-  }
-  .popup-text-container span {
+}
+.popup-text-container span {
     font-size: 1.2rem;
     font-weight: 600;
     display: block;
     margin-bottom: 1rem;
     text-align: center;
-  }
-  .popup-text-container p {
+}
+.popup-text-container p {
     margin-bottom: 0.5rem;
-  }
-  .popup-text-container li {
+}
+.popup-text-container li {
     line-height: 1.3rem;
-  }
-  .project-popup-btn {
+}
+.project-popup-btn {
     display: block;
     text-decoration: none;
     padding: 1rem;
@@ -379,52 +379,52 @@ export default {
     border-radius: 1rem;
     color: #fff;
     background: #f21137;
-  }
-  /*popup style end*/
+}
+/*popup style end*/
 
 
-  @media screen and (max-width: 1280px) {
+@media screen and (max-width: 1280px) {
     .projects-inner-container {
-      justify-content: center;
+    justify-content: center;
     }
-  }
-  @media screen and (max-width: 1100px) {
+}
+@media screen and (max-width: 1100px) {
     .popup-content-container {
-      flex-direction: column-reverse;
+    flex-direction: column-reverse;
     }
     .project-preview {
-      width: 100%;
-      border-radius: 0 0 1rem 1rem;
+    width: 100%;
+    border-radius: 0 0 1rem 1rem;
     }
     .project-btns-container {
-      width: 100%;
-      border-radius: 1rem 1rem 0 0;
+    width: 100%;
+    border-radius: 1rem 1rem 0 0;
     }
-  }
-  @media screen and (max-width: 1000px) {
+}
+@media screen and (max-width: 1000px) {
     .projects-inner-container {
-      max-width: 80%;
+    max-width: 80%;
     }
-  }
-  @media screen and (max-width: 900px) {
+}
+@media screen and (max-width: 900px) {
     .projects-inner-container {
-      max-width: 90%;
+    max-width: 90%;
     }
-  }
-  @media screen and (max-width: 500px) {
+}
+@media screen and (max-width: 500px) {
     .about-inner-container {
-      max-width: 90%;
+    max-width: 90%;
     }
     .contact-inner-container {
-      max-width: 95%;
+    max-width: 95%;
     }
-  }
-  @media screen and (max-width: 414px) {
+}
+@media screen and (max-width: 414px) {
     .about-container h2,
     .tech-container h2,
     .projects-container h2,
     .contact-container h2 {
-      font-size: 2.5rem;
+    font-size: 2.5rem;
     }
-  }
+}
 </style>
