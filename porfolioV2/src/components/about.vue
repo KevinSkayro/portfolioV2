@@ -1,6 +1,6 @@
 <template>
     <section id="about">
-        <div class="about-container">
+        <div class="section-container">
             <h2>ABOUT</h2>
             <hr />
             <div class="about-inner-container">

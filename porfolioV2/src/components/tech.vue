@@ -1,6 +1,6 @@
 <template>
     <section id="tech">
-    <div class="tech-container">
+    <div class="section-container">
         <h2>TECHNOLOGIES</h2>
         <hr class="white-hr" />
         <div class="tech-inner-container">
@@ -25,9 +25,6 @@
     </section>
 </template>
 <style lang="scss">
-#tech {
-    margin-top: 5rem;
-}
 .tech-container {
     display: flex;
     flex-direction: column;

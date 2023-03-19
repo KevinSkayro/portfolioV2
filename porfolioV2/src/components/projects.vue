@@ -1,6 +1,6 @@
 <template>
     <section id="projects">
-    <div class="projects-container">
+    <div class="section-container">
         <h2>PROJECTS</h2>
         <hr />
         <div class="projects-inner-container">
@@ -155,7 +155,7 @@ export default {
     overflow-y: scroll;
     height: 100vh;
 }
-.projects-container {
+.section-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -420,10 +420,8 @@ export default {
     }
 }
 @media screen and (max-width: 414px) {
-    .about-container h2,
-    .tech-container h2,
-    .projects-container h2,
-    .contact-container h2 {
+
+    .section-container h2 {
     font-size: 2.5rem;
     }
 }
