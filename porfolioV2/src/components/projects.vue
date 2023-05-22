@@ -1,4 +1,5 @@
 <template>
+
     <section id="projects">
     <div class="section-container">
         <h2>PROJECTS</h2>
@@ -7,113 +8,50 @@
             <template v-for="(project, index) in projects" :key="index">
                 <div :data-card-hover="'#card-'+project.id" class="project-card" :id="'card-'+project.id">
                     <div class="overlay"></div>
-                    <button data-popup-target="" class="preview-btn">VIEW PROJECT</button>
+                    <button :data-popup-target="'#popup-'+project.id" class="preview-btn" @click="openPopup">VIEW PROJECT</button>
                     <div class="project-title"><span>{{ project.title }}</span></div>
                 </div>
             </template>
         </div>
     </div>
     </section>
+
     <div class="popups">
-        
-        <div class="popup" id="popup-1">
-            <div class="popup-content">
-            <div class="popup-content-container">
-                <div class="project-preview preview-1">
-                <img src="../assets/weather-app.gif" alt="" />
-                </div>
-                <div class="project-btns-container">
-                <div class="close-popup-container">
-                    <i data-close-popup class="fas fa-times"></i>
-                </div>
-                <div class="btns-container">
-                    <div class="popup-text-container">
-                    <span>Weather API App</span>
-                    <p>Technologies used:</p>
-                    <ul>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>JavaScript</li>
-                        <li>API</li>
-                    </ul>
-                    </div>
-                    <a class="project-popup-btn btn-one" target="_blank" href="https://github.com/KevinSkayro/weather"
-                    >View source code</a
-                    >
-                    <a class="project-popup-btn btn-two" target="_blank" href="./weather/weather.html">Go to project</a>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="popup" id="popup-2">
-            <div class="popup-content">
-            <div class="popup-content-container">
-                <div class="project-preview preview-2">
-                <img src="../assets/todo-app.gif" alt="" />
-                </div>
-                <div class="project-btns-container">
-                <div class="close-popup-container">
-                    <i data-close-popup class="fas fa-times"></i>
-                </div>
-                <div class="btns-container">
-                    <div class="popup-text-container">
-                    <span>TO-DO List App</span>
-                    <p>Technologies used:</p>
-                    <ul>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>JavaScript</li>
-                    </ul>
-                    </div>
-                    <a
-                    class="project-popup-btn btn-one"
-                    target="_blank"
-                    href="https://github.com/KevinSkayro/todo-list-seize"
-                    >View source code</a
-                    >
-                    <a class="project-popup-btn btn-two" target="_blank" href="./todo-list-seize/seize-time.html"
-                    >Go to project</a
-                    >
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="popup" id="popup-3">
-            <div class="popup-content">
-                <div class="popup-content-container">
-                    <div class="project-preview preview-3">
-                    <img src="../assets/login-app.gif" alt="" />
-                    </div>
-                    <div class="project-btns-container">
-                        <div class="close-popup-container">
-                            <i data-close-popup class="fas fa-times"></i>
+
+        <template v-for="(project, index) in projects" :key="index">
+            <div class="popup" :id="'popup-'+project.id">
+                <div class="popup-content">
+                    <div class="popup-content-container">
+                        <div :class="'project-preview preview'+project.id">
+                            <img :src="project.popupPreview" alt="" />
                         </div>
-                        <div class="btns-container">
-                            <div class="popup-text-container">
-                            <span>PHP Login System</span>
-                            <p>Technologies used:</p>
-                            <ul>
-                                <li>HTML</li>
-                                <li>CSS</li>
-                                <li>JavaScript</li>
-                                <li>PHP</li>
-                                <li>mySQL</li>
-                            </ul>
+                        <div class="project-btns-container">
+                            <div class="close-popup-container">
+                                <i data-close-popup class="fas fa-times"></i>
                             </div>
-                            <a
-                            class="project-popup-btn btn-one"
-                            target="_blank"
-                            href="https://github.com/KevinSkayro/php-login-system"
-                            >View source code</a
-                            >
+                            <div class="btns-container">
+                                <div class="popup-text-container">
+                                <span>{{ project.title }}</span>
+                                <p>Technologies used:</p>
+                                <ul>
+                                    <li v-for="(technology, index) in project.technologies" :key="index">{{ technology }}</li>
+                                </ul>
+                                </div>
+                                <a class="project-popup-btn btn-one" target="_blank" :if="project.sourceCode" :href="project.sourceCode"
+                                >View source code</a
+                                >
+                                <a class="project-popup-btn btn-two" target="_blank" :if="project.goToProject" :href="project.goToProject">Go to project</a>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+
             </div>
-        </div>
-        <div data-popup-overlay class="popup-overlay"></div>
+        </template>
+
+        <div v-if="popupOverlay" class="popup-overlay" ></div>
+
     </div>
 </template>
 
@@ -121,35 +59,58 @@
 export default {
     data() {
         return {
+            popupOverlay: false,
             projects: [
                 {
                     id: 1,
                     title: "Weather API App",
                     technologies: ["HTML", "CSS", "JavaScript", "API"],
                     cardPreview: "weather-app.gif",
-                    popupPreview: "../assets/weather-app.gif",
+                    popupPreview: "/src/assets/weather-app.gif",
+                    technologies: ["HTML", "CSS", "JavaScript", "API"],
+                    sourceCode: "https://github.com/KevinSkayro/weather",
+                    goToProject: "./weather/weather.html"
                 },
                 {
                     id: 2,
                     title: "TO-DO List App",
                     technologies: ["HTML", "CSS", "JavaScript"],
                     cardPreview: "todo-app.gif",
-                    popupPreview: "../assets/todo-app.gif",
+                    popupPreview: "/src/assets/todo-app.gif",
+                    technologies: ["HTML", "CSS", "JavaScript"],
+                    sourceCode: "https://github.com/KevinSkayro/todo-list-seize",
+                    goToProject: "./todo-list-seize/seize-time.html"
                 },
                 {
                     id: 3,
                     title: "PHP Login System",
                     technologies: ["HTML", "CSS", "JavaScript", "PHP", "mySQL"],
                     cardPreview: "login-app.gif",
-                    popupPreview: "../assets/login-app.gif",
+                    popupPreview: "/src/assets/login-app.gif",
+                    technologies: ["HTML", "CSS", "JavaScript", "PHP", "mySQL"],
+                    sourceCode: "https://github.com/KevinSkayro/php-login-system",
                 }
             ]
         }
-    }
+    },
+    methods: {
+        openPopup(e) {
+            console.log(e.target);
+            const popupTarget = e.target.getAttribute("data-popup-target");
+            document.querySelector(popupTarget).classList.add("active");
+            this.popupOverlay = true;
+        },
+        closePopup(e) {
+            const popup = e.target.closest(".popup");
+            popup.classList.remove("active");
+            this.popupOverlay = false;
+        }
+    },
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
+
 #projects {
     background: #fff;
     overflow-y: scroll;
@@ -318,7 +279,7 @@ export default {
     transition: 0.3s ease-in-out;
     z-index: 2;
 }
-.popup-overlay.active {
+.popup-overlay {
     pointer-events: all;
     transform: scale(1);
 }
@@ -385,44 +346,44 @@ export default {
 
 @media screen and (max-width: 1280px) {
     .projects-inner-container {
-    justify-content: center;
+        justify-content: center;
     }
 }
 @media screen and (max-width: 1100px) {
     .popup-content-container {
-    flex-direction: column-reverse;
+        flex-direction: column-reverse;
     }
     .project-preview {
-    width: 100%;
-    border-radius: 0 0 1rem 1rem;
+        width: 100%;
+        border-radius: 0 0 1rem 1rem;
     }
     .project-btns-container {
-    width: 100%;
-    border-radius: 1rem 1rem 0 0;
+        width: 100%;
+        border-radius: 1rem 1rem 0 0;
     }
 }
 @media screen and (max-width: 1000px) {
     .projects-inner-container {
-    max-width: 80%;
+        max-width: 80%;
     }
 }
 @media screen and (max-width: 900px) {
     .projects-inner-container {
-    max-width: 90%;
+        max-width: 90%;
     }
 }
 @media screen and (max-width: 500px) {
     .about-inner-container {
-    max-width: 90%;
+        max-width: 90%;
     }
     .contact-inner-container {
-    max-width: 95%;
+        max-width: 95%;
     }
 }
 @media screen and (max-width: 414px) {
 
     .section-container h2 {
-    font-size: 2.5rem;
+        font-size: 2.5rem;
     }
 }
 </style>
