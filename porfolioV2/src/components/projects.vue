@@ -19,7 +19,8 @@
     <div class="popups">
 
         <template v-for="(project, index) in projects" :key="index">
-            <div class="popup" :id="'popup-'+project.id">
+            <div class="popup" :id="'popup-'+project.id" v-bind:class="{ active: selectedPopup == '#popup-'+project.id }">
+                                                            
                 <div class="popup-content">
                     <div class="popup-content-container">
                         <div :class="'project-preview preview'+project.id">
@@ -27,7 +28,7 @@
                         </div>
                         <div class="project-btns-container">
                             <div class="close-popup-container">
-                                <i data-close-popup class="fas fa-times"></i>
+                                <font-awesome-icon icon="fa-solid fa-xmark" @click="closePopup()" />
                             </div>
                             <div class="btns-container">
                                 <div class="popup-text-container">
@@ -50,15 +51,23 @@
             </div>
         </template>
 
-        <div v-if="popupOverlay" class="popup-overlay" ></div>
+        <div v-if="popupOverlay" class="popup-overlay" @click="closePopup()"></div>
 
     </div>
 </template>
 
 <script>
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+library.add(faXmark)
 export default {
+    components: {
+        'font-awesome-icon': FontAwesomeIcon
+    },
     data() {
         return {
+            selectedPopup: null,
             popupOverlay: false,
             projects: [
                 {
@@ -97,12 +106,12 @@ export default {
         openPopup(e) {
             console.log(e.target);
             const popupTarget = e.target.getAttribute("data-popup-target");
-            document.querySelector(popupTarget).classList.add("active");
+            // document.querySelector(popupTarget).classList.add("active");
+            this.selectedPopup = popupTarget;
             this.popupOverlay = true;
         },
-        closePopup(e) {
-            const popup = e.target.closest(".popup");
-            popup.classList.remove("active");
+        closePopup() {
+            this.selectedPopup = null;
             this.popupOverlay = false;
         }
     },
@@ -262,7 +271,7 @@ export default {
     font-size: 1.5rem;
     text-align: end;
 }
-.fa-times:hover {
+.fa-xmark:hover {
     cursor: pointer;
     color: #f21137;
 }
