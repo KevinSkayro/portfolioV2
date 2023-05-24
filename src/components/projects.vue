@@ -38,10 +38,10 @@
                                     <li v-for="(technology, index) in project.technologies" :key="index">{{ technology }}</li>
                                 </ul>
                                 </div>
-                                <a class="project-popup-btn btn-one" target="_blank" :if="project.sourceCode" :href="project.sourceCode"
+                                <a class="project-popup-btn btn-one" target="_blank" v-if="project.sourceCode" :href="project.sourceCode"
                                 >View source code</a
                                 >
-                                <a class="project-popup-btn btn-two" target="_blank" :if="project.goToProject" :href="project.goToProject">Go to project</a>
+                                <a class="project-popup-btn btn-two" target="_blank" v-if="project.goToProject" :href="project.goToProject">Go to project</a>
                             </div>
 
                         </div>
