@@ -8,7 +8,7 @@
             <template v-for="(project, index) in projects" :key="index">
                 <div :data-card-hover="'#card-'+project.id" class="project-card" :id="'card-'+project.id">
                     <div class="overlay"></div>
-                    <button :data-popup-target="'#popup-'+project.id" class="preview-btn" @click="openPopup">VIEW PROJECT</button>
+                    <button :data-popup-target="project.id" class="preview-btn" @click="openPopup">VIEW PROJECT</button>
                     <div class="project-title"><span>{{ project.title }}</span></div>
                 </div>
             </template>
@@ -19,7 +19,7 @@
     <div class="popups">
 
         <template v-for="(project, index) in projects" :key="index">
-            <div class="popup" :id="'popup-'+project.id" v-bind:class="{ active: selectedPopup == '#popup-'+project.id }">
+            <div class="popup" :id="'popup-'+project.id" v-bind:class="{ active: selectedPopup == project.id }">
                                                             
                 <div class="popup-content">
                     <div class="popup-content-container">
@@ -106,7 +106,6 @@ export default {
         openPopup(e) {
             console.log(e.target);
             const popupTarget = e.target.getAttribute("data-popup-target");
-            // document.querySelector(popupTarget).classList.add("active");
             this.selectedPopup = popupTarget;
             this.popupOverlay = true;
         },
