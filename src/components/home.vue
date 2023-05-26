@@ -2,7 +2,7 @@
         <header class="hero_container">
             <div class="fullscreen_wrap">
                 <div class="img_container">
-                    <img src="@src/assets/hero.jpg" alt="hero" />
+
                 </div>
             </div>
             <div class="hero_content">
