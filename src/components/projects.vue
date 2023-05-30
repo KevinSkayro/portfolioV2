@@ -75,7 +75,7 @@ export default {
                     title: "Weather API App",
                     technologies: ["HTML", "CSS", "JavaScript", "API"],
                     cardPreview: "weather-app.gif",
-                    popupPreview: "/src/assets/weather-app.gif",
+                    popupPreview: "/src/images/weather-app.gif",
                     technologies: ["HTML", "CSS", "JavaScript", "API"],
                     sourceCode: "https://github.com/KevinSkayro/weather",
                     goToProject: "./weather/weather.html"
@@ -85,7 +85,7 @@ export default {
                     title: "TO-DO List App",
                     technologies: ["HTML", "CSS", "JavaScript"],
                     cardPreview: "todo-app.gif",
-                    popupPreview: "/src/assets/todo-app.gif",
+                    popupPreview: "/src/images/todo-app.gif",
                     technologies: ["HTML", "CSS", "JavaScript"],
                     sourceCode: "https://github.com/KevinSkayro/todo-list-seize",
                     goToProject: "./todo-list-seize/seize-time.html"
@@ -95,7 +95,7 @@ export default {
                     title: "PHP Login System",
                     technologies: ["HTML", "CSS", "JavaScript", "PHP", "mySQL"],
                     cardPreview: "login-app.gif",
-                    popupPreview: "/src/assets/login-app.gif",
+                    popupPreview: "/src/images/login-app.gif",
                     technologies: ["HTML", "CSS", "JavaScript", "PHP", "mySQL"],
                     sourceCode: "https://github.com/KevinSkayro/php-login-system",
                 }
@@ -120,7 +120,6 @@ export default {
 <style lang="scss">
 
 #projects {
-    background: #fff;
     overflow-y: scroll;
     height: 100vh;
 }
@@ -150,13 +149,13 @@ export default {
     overflow: hidden;
 }
 #card-1 {
-    background: url(../assets/weather-app-preview.gif) bottom left/100% no-repeat;
+    background: url(../images/weather-app-preview.gif) bottom left/100% no-repeat;
 }
 #card-2 {
-    background: url(../assets/todo-app-preview.gif) top left/100% no-repeat;
+    background: url(../images/todo-app-preview.gif) top left/100% no-repeat;
 }
 #card-3 {
-    background: url(../assets/login-app-preview.gif) top left/100% no-repeat;
+    background: url(../images/login-app-preview.gif) top left/100% no-repeat;
 }
 
 .project-card:hover {

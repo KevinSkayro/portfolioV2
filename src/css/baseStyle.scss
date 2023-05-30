@@ -16,6 +16,11 @@
     font-display: swap
 }
 
+body {
+    background-color: var(--purple);
+    background-image: linear-gradient(160deg, var(--purple) 0%, var(--lightBlue) 100%);
+}
+
 .hero_container {
     height:100vh;
     overflow: hidden;
@@ -35,13 +40,11 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: var(--purple);
-        background-image: linear-gradient(160deg, var(--purple) 0%, var(--lightBlue) 100%);
         color: #fff;
 
         .header_text {
             font-family: var(--titleFont);
-            font-size: 3rem;
+            font-size: 6rem;
             font-weight: 600;
             text-align: center;
         }
@@ -75,4 +78,5 @@
   font-size: 3rem;
   text-align: center;
   line-height: 3rem;
+  font-family: var(--titleFont);
 }
