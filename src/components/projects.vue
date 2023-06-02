@@ -121,7 +121,6 @@ export default {
 
 #projects {
     overflow-y: scroll;
-    height: 100vh;
 }
 .section-container {
     display: flex;
@@ -135,7 +134,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 2rem 0;
 }
 .project-card {
     position: relative;
