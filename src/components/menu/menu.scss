@@ -1,0 +1,114 @@
+$duration: .7s;
+
+html {
+    box-sizing: border-box;
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+    }
+}
+
+.menu_container {
+    display: flex;
+    justify-content: center;
+}
+
+.menu {
+    margin: 0;
+    display: flex;
+    // Works well with 100% width  
+    width: 32.05em;
+    font-size: 1.2em;
+    padding: 0 2.85em;
+    position: absolute;
+    bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--darkGrey);
+    border-radius: 1em;
+
+    .menu_item {
+        all: unset;
+        flex-grow: 1;
+        z-index: 100;
+        display: flex;
+        cursor: pointer;
+        position: relative;
+        border-radius: 50%;
+        align-items: center;
+        will-change: transform;
+        justify-content: center;
+        padding: 0.55em 0 0.85em;
+        transition: transform $duration;
+
+        &::before {
+            content: "";
+            z-index: -1;
+            width: 4.2em;
+            height: 4.2em;
+            border-radius: 50%;
+            position: absolute;
+            transform: scale(0);
+            transition: background-color $duration;
+        }
+
+        &.router-link-active {
+            transform: translate3d(0, -.8em, 0);
+
+            &::before {
+                transform: scale(1);
+                background-color: var(--bgColorItem);
+            }
+
+
+        }
+
+
+        .icon {
+            width: 2.6em;
+            height: 2.6em;
+            stroke: white;
+            fill: transparent;
+            stroke-width: 1pt;
+            stroke-miterlimit: 10;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 400;
+
+            &.router-link-active {
+                animation: strok 1.5s reverse;
+            }
+        }
+    }
+
+    .menu_border {
+        left: 0;
+        bottom: 99%;
+        width: 10.9em;
+        height: 2.4em;
+        position: absolute;
+        clip-path: url(#menu);
+        will-change: transform;
+        background-color: var(--darkGrey);
+        transition: transform $duration;
+    }
+}
+
+.svg-container {
+    width: 0;
+    height: 0;
+}
+
+@media screen and (max-width: 50em) {
+    .menu {
+        font-size: .8em;
+    }
+}
+
+@keyframes strok {
+    100% {
+        stroke-dashoffset: 400;
+    }
+}

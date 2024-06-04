@@ -39,3 +39,27 @@
         <a target="_blank" class="footer-links" href="https://www.kevinskayro.com">Site by Kevin Castro</a>
     </section>
 </template>
+<style lang="scss">
+
+#contact {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .contact-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .contact-inner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1000px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    padding: 0 0 2rem 0;
+  }
+</style>

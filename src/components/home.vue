@@ -1,22 +1,19 @@
 <template>
-        <header class="hero_container">
-            <div class="fullscreen_wrap">
-                <div class="img_container">
+    <header class="hero_container">
+        <div class="fullscreen_wrap">
+            <div class="img_container">
 
-                </div>
             </div>
-            <div class="hero_content">
-                <h1 class="header_text">Hi, I'm Kevin</h1>
-                <h1 class="header_text">I'm a Front-end Developer</h1>
-                <h2 class="header_subtext">I build websites and web applications.</h2>
-                <router-link to="/projects" class="explore_btn">
-                    SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
-                </router-link>
-                <!-- <a data-goto-btn class="explore-btn" >
-                    SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
-                </a> -->
-            </div>
-      </header>
+        </div>
+        <div class="hero_content">
+            <h1 class="header_text">Hi, I'm Kevin</h1>
+            <h1 class="header_text">I'm a Front-end Developer</h1>
+            <h2 class="header_subtext">I build websites and web applications.</h2>
+            <router-link to="/projects" class="explore_btn">
+                SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
+            </router-link>
+        </div>
+    </header>
 </template>
 
 <script>
@@ -29,7 +26,7 @@ library.add(faArrowRight)
 
 export default {
     created: () => {
-        if(!useIsMobile()){
+        if (!useIsMobile()) {
             console.log('desktop');
         } else {
             console.log('mobile');
@@ -40,4 +37,3 @@ export default {
     }
 }
 </script>
-
