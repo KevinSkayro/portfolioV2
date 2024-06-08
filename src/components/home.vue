@@ -1,9 +1,9 @@
 <template>
-    <header class="hero_container">
+    <section class="hero_container">
         <div class="fullscreen_wrap">
-            <div class="img_container">
-
-            </div>
+            <video autoplay muted loop class="video_container">
+                <source src="@src/assets/synthwave.mp4" type="video/mp4">
+            </video>
         </div>
         <div class="hero_content">
             <h1 class="header_text">Hi, I'm Kevin</h1>
@@ -13,7 +13,7 @@
                 SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
             </router-link>
         </div>
-    </header>
+    </section>
 </template>
 
 <script>
@@ -22,6 +22,9 @@ import { useIsMobile } from '@src/composables/generalMethods.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import gsap from 'gsap';
+
+
 library.add(faArrowRight)
 
 export default {
@@ -31,9 +34,40 @@ export default {
         } else {
             console.log('mobile');
         }
+
+
+
+    },
+    mounted() {
+        // slide in animate text on load
+        gsap.from('.header_text', {
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            stagger: 0.25
+        })
+
+        gsap.from('.header_subtext', {
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            delay: .5
+        })
+
+        // slide in explore button
+        gsap.from('.explore_btn', {
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            delay: .75
+        })
     },
     components: {
         'font-awesome-icon': FontAwesomeIcon
     }
 }
 </script>
+
+<style lang="scss">
+@import "@src/css/components/home.scss"
+</style>

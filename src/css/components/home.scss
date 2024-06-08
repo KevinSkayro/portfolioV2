@@ -1,0 +1,23 @@
+.video_container {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+
+.explore_btn {
+    color: #fff;
+    text-decoration: none;
+    margin-top: 2rem;
+    border: 1px solid #fff;
+    border-radius: 2rem;
+    padding: 1rem;
+    -webkit-backdrop-filter: blur(0.3rem);
+    backdrop-filter: blur(0.3rem);
+
+    &:hover {
+        background: #C724B1;
+        border: 1px solid #C724B1;
+        cursor: pointer;
+    }
+}

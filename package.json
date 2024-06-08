@@ -14,6 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "gsap": "^3.12.5",
     "path": "^0.12.7",
     "pinia": "^2.0.32",
     "postcss-nested": "^6.0.0",
