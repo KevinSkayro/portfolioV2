@@ -30,7 +30,25 @@
 </template>
 <script>
 
+import gsap from 'gsap';
+
 export default {
+    mounted: () => {
+        gsap.from('#tech h2', {
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            stagger: 0.25
+        })
+
+        gsap.from('.options', {
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            delay: .25,
+            stagger: 0.25
+        })
+    },
     data() {
         return {
             activeCard: 0,
