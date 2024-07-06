@@ -24,7 +24,7 @@
                         </li>
                         <li>
                             <a href="https://www.youtube.com/channel/UC4SZMSA6juTx9aCCCsu-0iw">
-                                <font-awesome-icon icon="fa-brands fa-vuejs" />
+                                <font-awesome-icon icon="fa-brands fa-youtube" />
                             </a>
                         </li>
                         <li>
@@ -167,7 +167,7 @@ export default {
             #285aeb 90%);
 }
 
-social-menu ul li:nth-child(4) a:hover {
+.social-menu ul li:nth-child(4) a:hover {
     background-color: #cd201f;
 }
 
