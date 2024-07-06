@@ -31,6 +31,11 @@
 <script>
 
 import gsap from 'gsap';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faDatabase } from '@fortawesome/free-solid-svg-icons'
+import { faHtml5, faCss3Alt, faVuejs, faReact, faLaravel, faWordpress, faAws } from '@fortawesome/free-brands-svg-icons'
+
+library.add(faHtml5, faCss3Alt, faVuejs, faReact, faLaravel, faDatabase, faWordpress, faAws)
 
 export default {
     mounted: () => {
