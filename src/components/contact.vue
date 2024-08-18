@@ -7,65 +7,42 @@
                 <!-- Social Media Links -->
                 <div class="social-menu">
                     <ul>
-                        <li>
-                            <a href="https://www.facebook.com/KevinSkayroJourney">
-                                <font-awesome-icon icon="fa-brands fa-facebook-f" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://twitter.com/Kevinskayro">
-                                <font-awesome-icon icon="fa-brands fa-twitter" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.instagram.com/kevinskayro_journey/">
-                                <font-awesome-icon icon="fa-brands fa-instagram" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.youtube.com/channel/UC4SZMSA6juTx9aCCCsu-0iw">
-                                <font-awesome-icon icon="fa-brands fa-youtube" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.linkedin.com/in/kevin-skayro/">
-                                <font-awesome-icon icon="fa-brands fa-linkedin-in" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/KevinSkayro">
-                                <font-awesome-icon icon="fa-brands fa-github-alt" />
+                        <li v-for="(socialLink, index) in socialLinks" :key="index">
+                            <a :href="socialLink.href">
+                                <font-awesome-icon :icon="socialLink.icon" />
                             </a>
                         </li>
                     </ul>
                 </div>
                 <!-- Contact Form -->
                 <form class="contact-form" @submit.prevent="sendEmail">
-                    <div>
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" v-model="form.name" required />
+                    <div class="inputs" v-if="formSubmitted === false">
+                        <div>
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" v-model="form.name" required />
+                        </div>
+                        <div>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" v-model="form.email" required />
+                        </div>
+                        <div>
+                            <label for="message">Message:</label>
+                            <textarea id="message" v-model="form.message" required></textarea>
+                        </div>
+                        <div style="display: none;">
+                            <label for="website">Website:</label>
+                            <input type="text" id="website" v-model="form.website" />
+                        </div>
+                        <button type="submit">Send</button>
                     </div>
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" v-model="form.email" required />
+                    <div class="sent-form" v-else>
+
+                        <h3 class="success-message">Message has been sent successfully!</h3>
+                        <div class="done"></div>
                     </div>
-                    <div>
-                        <label for="message">Message:</label>
-                        <textarea id="message" v-model="form.message" required></textarea>
-                    </div>
-                    <button type="submit">Send</button>
                 </form>
             </div>
         </div>
-        <a target="_blank" class="footer-links" href="https://www.freepik.com/vectors/people">
-            People vector in "about" section created by pikisuperstar - www.freepik.com
-        </a>
-        <a target="_blank" class="footer-links" href="https://github.com/KevinSkayro/portfolio2021">
-            Portfolio's source code
-        </a>
-        <a target="_blank" class="footer-links" href="https://www.kevinskayro.com">
-            Site by Kevin Castro
-        </a>
     </section>
 </template>
 
@@ -93,12 +70,32 @@ export default {
             form: {
                 name: '',
                 email: '',
-                message: ''
-            }
+                message: '',
+                website: ''
+            },
+            formSubmitted: false,
+            socialLinks: [
+                { href: "https://www.facebook.com/KevinSkayroJourney", icon: "fa-brands fa-facebook-f" },
+                { href: "https://twitter.com/Kevinskayro", icon: "fa-brands fa-twitter" },
+                { href: "https://www.instagram.com/kevinskayro_journey/", icon: "fa-brands fa-instagram" },
+                { href: "https://www.youtube.com/channel/UC4SZMSA6juTx9aCCCsu-0iw", icon: "fa-brands fa-youtube" },
+                { href: "https://www.linkedin.com/in/kevin-skayro/", icon: "fa-brands fa-linkedin-in" },
+                { href: "https://github.com/KevinSkayro", icon: "fa-brands fa-github-alt" }
+            ]
         };
     },
     methods: {
         sendEmail() {
+
+            // if(this.form.name === '' || this.form.email === '' || this.form.message === '') {
+            //     alert('Please fill out all fields');
+            //     return;
+            // }
+
+            if (this.form.website !== '') {
+                alert('are you a bot?' + this.form.website);
+                return;
+            }
 
             fetch('https://kevinskayro.co/api/?action=contact_form_email', {
                 method: 'POST',
@@ -108,17 +105,20 @@ export default {
                 body: JSON.stringify({
                     name: this.form.name,
                     email: this.form.email,
-                    message: this.form.message
+                    message: this.form.message,
+                    website: this.form.website
                 })
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
+                    if (data.success) this.formSubmitted = true;
+                    // Reset form
+                    this.form.name = '';
+                    this.form.email = '';
+                    this.form.message = '';
                 })
-            // Reset form
-            this.form.name = '';
-            this.form.email = '';
-            this.form.message = '';
+
 
 
 
@@ -151,6 +151,7 @@ export default {
     flex-direction: column;
     margin: 5rem 0 1rem 0;
     color: #fff;
+    overflow-y: scroll;
 }
 
 .contact-inner-container {
@@ -179,7 +180,7 @@ export default {
 .social-menu ul li a {
     color: #030303;
     font-size: 25px;
-    line-height: 50px;
+    line-height: 54px;
     transition: 0.5s;
 }
 
@@ -234,34 +235,48 @@ export default {
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     max-width: 400px;
     background: #f5f5f5;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    min-height: 298px;
 }
 
-.contact-form div {
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.inputs div {
     display: flex;
     flex-direction: column;
 }
 
-.contact-form label {
+.inputs label {
     margin-bottom: 0.5rem;
     color: #333;
 }
 
-.contact-form input,
-.contact-form textarea {
+.inputs input,
+.inputs textarea {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
 }
 
-.contact-form button {
+.inputs textarea {
+    resize: vertical;
+}
+
+.inputs button {
     padding: 0.75rem;
     border: none;
     border-radius: 4px;
@@ -271,8 +286,69 @@ export default {
     font-size: 1rem;
 }
 
-.contact-form button:hover {
+.inputs button:hover {
     background-color: #555;
+}
+
+.sent-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    height: 100%;
+    width: 100%;
+    padding: 2rem 0
+}
+
+.success-message {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.done {
+    animation: appear .7s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    background-color: #0a6;
+    border-radius: 50%;
+    height: 50px;
+    position: relative;
+    width: 50px;
+
+    &:after,
+    &:before {
+        background-color: #fff;
+        border-radius: 2px;
+        content: '';
+        left: calc(50% + 2px);
+        position: absolute;
+        top: calc(50% + 2px);
+    }
+
+    &:after {
+        height: 5px;
+        transform: rotate(-45deg) translateX(-1px);
+        transform-origin: bottom left;
+        width: 20px;
+    }
+
+    &:before {
+        height: 5px;
+        transform: rotate(-135deg);
+        transform-origin: bottom left;
+        width: 15px;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .footer-links {
