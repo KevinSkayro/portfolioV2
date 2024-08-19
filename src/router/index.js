@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "@src/components/home.vue"
 import Projects from "@src/components/projects.vue"
 import Tech from "@src/components/tech.vue"
-import Contact from "@src/components/contact.vue"
+import Contact from "@src/components/contact/contact.vue"
 import About from "@src/components/about.vue"
 
 const router = createRouter({

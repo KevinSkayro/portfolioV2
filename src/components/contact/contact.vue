@@ -33,7 +33,18 @@
                             <label for="website">Website:</label>
                             <input type="text" id="website" v-model="form.website" />
                         </div>
-                        <button type="submit">Send</button>
+                        <button type="submit">
+
+                            <span
+                            v-if="formLoading === true"
+                            class="loader"></span>
+
+                            <span
+                            v-else
+                            >Send</span>
+                            
+                        
+                        </button>
                     </div>
                     <div class="sent-form" v-else>
 
@@ -74,6 +85,7 @@ export default {
                 website: ''
             },
             formSubmitted: false,
+            formLoading: false,
             socialLinks: [
                 { href: "https://www.facebook.com/KevinSkayroJourney", icon: "fa-brands fa-facebook-f" },
                 { href: "https://twitter.com/Kevinskayro", icon: "fa-brands fa-twitter" },
@@ -96,7 +108,7 @@ export default {
                 alert('are you a bot?' + this.form.website);
                 return;
             }
-
+            this.formLoading = true;
             fetch('https://kevinskayro.co/api/?action=contact_form_email', {
                 method: 'POST',
                 headers: {
@@ -117,6 +129,7 @@ export default {
                     this.form.name = '';
                     this.form.email = '';
                     this.form.message = '';
+                    this.formLoading = false;
                 })
 
 
@@ -149,9 +162,10 @@ export default {
     align-content: center;
     justify-content: center;
     flex-direction: column;
-    margin: 5rem 0 1rem 0;
     color: #fff;
     overflow-y: scroll;
+    padding: 2rem;
+    height: 80vh;
 }
 
 .contact-inner-container {
@@ -160,7 +174,7 @@ export default {
     justify-content: center;
     align-items: center;
     width: 1000px;
-    margin-top: 2rem;
+    margin-top: 0rem;
     flex-wrap: wrap;
     padding: 0 0 2rem 0;
 }
@@ -361,4 +375,24 @@ export default {
 .footer-links:hover {
     text-decoration: underline;
 }
+
+.loader {
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
 </style>
