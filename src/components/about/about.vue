@@ -2,7 +2,6 @@
     <section id="about">
         <div class="section-container">
             <h2>ABOUT</h2>
-            <hr />
             <div class="about-inner-container">
                 <div class="about-content content-one">
                     <h3>
@@ -29,60 +28,6 @@
         </div>
     </section>
 </template>
-<style lang="scss">
-.about-container {
-    transform: skewY(5deg);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    p {
-        margin-bottom: 1rem;
-        max-width: 600px;
-        text-align: center;
-        font-size: 1.2rem;
-        line-height: 1.7rem;
-    }
-}
-
-.about-container h2,
-.tech-container h2,
-.projects-container h2,
-.contact-container h2 {
-    font-size: 3rem;
-    text-align: center;
-    line-height: 3rem;
-}
-
-.about-inner-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    width: 1000px;
-    max-width: 80%;
-
-    h3 {
-        font-size: 2rem;
-        text-align: center;
-        line-height: 2.5rem;
-        margin-bottom: 1rem;
-    }
-
-    img {
-        width: 100%;
-    }
-}
-
-.about-content {
-    flex: 1;
-    padding: 2rem;
-}
-
-.content-one {
-    background-color: var(--user-button-cardborder);
-    border-radius: 10px;
-    box-shadow: 0 0 10px var(--user-button-shadow);
-}
+<style lang="scss" scoped>
+@import '@src/components/about/about.scss';
 </style>

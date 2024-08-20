@@ -68,6 +68,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "@src/css/components/home.scss"
+<style lang="scss" scoped>
+@import "@src/components/home/home.scss";
 </style>
