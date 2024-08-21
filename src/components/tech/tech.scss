@@ -5,10 +5,6 @@
     --user-button-shadow: rgba(0, 0, 0, 0.1);
 }
 
-.section-container {
-    width: 1000px;
-}
-
 @mixin dark {
     &.dark {
         @content;
