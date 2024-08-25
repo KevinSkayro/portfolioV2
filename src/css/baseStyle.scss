@@ -15,6 +15,9 @@
     font-style: normal;
     font-display: swap
 }
+html, body, .main-container {
+    overflow: hidden;
+}
 
 body {
     background-color: #6713d2;
@@ -70,7 +73,7 @@ body {
   line-height: 3rem;
   font-family: var(--titleFont);
   color: #fff;
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 
 .loading-screen {

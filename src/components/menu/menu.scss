@@ -119,6 +119,12 @@ html {
     }
 }
 
+@media screen and (max-width: 25em) {
+    .menu {
+        font-size: .5em;
+    }
+}
+
 @keyframes strok {
     100% {
         stroke-dashoffset: 400;

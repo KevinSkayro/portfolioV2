@@ -5,56 +5,60 @@
             <h2>PROJECTS</h2>
             <div class="projects-inner-container">
                 <template v-for="(project, index) in projects" :key="index">
-                    <div :data-card-hover="'#card-' + project.id" class="project-card" :id="'card-' + project.id">
+                    <div :data-card-hover="'#card-' + project.id" class="project-card" :id="'card-' + project.id"
+                        @click="useIsMobile ? openPopup(project.id) : null">
                         <div class="overlay"></div>
-                        <button :data-popup-target="project.id" class="preview-btn" @click="openPopup">VIEW
+                        <button class="preview-btn" @click="openPopup(project.id)">VIEW
                             PROJECT</button>
                         <div class="project-title"><span>{{ project.title }}</span></div>
                     </div>
                 </template>
             </div>
-        </div>
-    </section>
 
-    <div class="popups">
 
-        <template v-for="(project, index) in projects" :key="index">
-            <div class="popup" :id="'popup-' + project.id" v-bind:class="{ active: selectedPopup == project.id }">
 
-                <div class="popup-content">
-                    <div class="popup-content-container">
-                        <div :class="'project-preview preview' + project.id">
-                            <img :src="project.popupPreview" alt="" />
-                        </div>
-                        <div class="project-btns-container">
-                            <div class="close-popup-container">
-                                <font-awesome-icon icon="fa-solid fa-xmark" @click="closePopup()" />
-                            </div>
-                            <div class="btns-container">
-                                <div class="popup-text-container">
-                                    <span>{{ project.title }}</span>
-                                    <p>Technologies used:</p>
-                                    <ul>
-                                        <li v-for="(technology, index) in project.technologies" :key="index">{{
-                                            technology }}</li>
-                                    </ul>
+            <div class="popups">
+
+                <template v-for="(project, index) in projects" :key="index">
+                    <div class="popup" :id="'popup-' + project.id"
+                        v-bind:class="{ active: selectedPopup == project.id }">
+
+                        <div class="popup-content">
+                            <div class="popup-content-container">
+                                <div :class="'project-preview preview' + project.id">
+                                    <img :src="project.popupPreview" alt="" />
                                 </div>
-                                <a class="project-popup-btn btn-one" target="_blank" v-if="project.sourceCode"
-                                    :href="project.sourceCode">View source code</a>
-                                <a class="project-popup-btn btn-two" target="_blank" v-if="project.goToProject"
-                                    :href="project.goToProject">Go to project</a>
-                            </div>
+                                <div class="project-btns-container">
+                                    <div class="close-popup-container">
+                                        <font-awesome-icon icon="fa-solid fa-xmark" @click="closePopup()" />
+                                    </div>
+                                    <div class="btns-container">
+                                        <div class="popup-text-container">
+                                            <span>{{ project.title }}</span>
+                                            <p>Technologies used:</p>
+                                            <ul>
+                                                <li v-for="(technology, index) in project.technologies" :key="index">{{
+                                                    technology }}</li>
+                                            </ul>
+                                        </div>
+                                        <a class="project-popup-btn btn-one" target="_blank" v-if="project.sourceCode"
+                                            :href="project.sourceCode">View source code</a>
+                                        <a class="project-popup-btn btn-two" target="_blank" v-if="project.goToProject"
+                                            :href="project.goToProject">Go to project</a>
+                                    </div>
 
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                </div>
+                </template>
+
+                <div v-if="popupOverlay" class="popup-overlay" @click="closePopup()"></div>
 
             </div>
-        </template>
-
-        <div v-if="popupOverlay" class="popup-overlay" @click="closePopup()"></div>
-
-    </div>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -63,9 +67,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 library.add(faXmark)
 
+import { useIsMobile } from '@src/composables/generalMethods.js'
 import gsap from 'gsap';
 
 export default {
+    computed: {
+        useIsMobile
+    },
     mounted() {
         gsap.from('#projects h2', {
             duration: 1,
@@ -123,10 +131,8 @@ export default {
         }
     },
     methods: {
-        openPopup(e) {
-            console.log(e.target);
-            const popupTarget = e.target.getAttribute("data-popup-target");
-            this.selectedPopup = popupTarget;
+        openPopup(id) {
+            this.selectedPopup = id;
             this.popupOverlay = true;
         },
         closePopup() {
