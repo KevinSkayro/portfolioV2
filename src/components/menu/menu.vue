@@ -1,7 +1,6 @@
 <template>
     <div class="menu_container">
         <menu class="menu">
-
             <RouterLink to="/projects" class="menu_item" style="--bgColorItem: #C724B1;">
                 <svg class="icon" viewBox="0 0 32 32">
                     <path class="st0"
@@ -12,39 +11,32 @@
                     <line class="st0" x1="22" y1="20" x2="22" y2="18" />
                     <path class="st0" d="M9.3,10c0.9-2.9,3.5-5,6.7-5c3.2,0,5.8,2.1,6.7,5" />
                 </svg>
-
             </RouterLink>
-
             <RouterLink to="/tech" class="menu_item" style="--bgColorItem: #71DBD4;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
             </RouterLink>
-
             <RouterLink to="/" class="menu_item" style="--bgColorItem: #642F6C;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
             </RouterLink>
-
             <RouterLink to="/about" class="menu_item" style="--bgColorItem: #58A7AF;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             </RouterLink>
-
             <RouterLink to="/contact" class="menu_item" style="--bgColorItem: #B3B0C4;">
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
             </RouterLink>
-
             <div class="menu_border"></div>
-
         </menu>
     </div>
     <div class="svg-container">

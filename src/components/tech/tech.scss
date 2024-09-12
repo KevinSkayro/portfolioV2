@@ -180,7 +180,7 @@ body {
             height: 600px;
             min-width: 90%;
             margin-bottom: 4rem;
-            
+
             .option {
                 margin: 5px 0;
                 background-repeat: no-repeat;
@@ -190,7 +190,6 @@ body {
             }
 
             .option:not(.active) {
-                // height: 100px;
                 padding: 30px 0;
             }   
         }

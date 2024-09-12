@@ -17,12 +17,10 @@
                     <p>
                         I have most of my experience with Vue.js, Next.js/React, and Laravel/PHP. I have also worked
                         with databases like MySQL and MongoDB.
-
-
                     </p>
                 </div>
                 <div class="about-content content-two">
-                    <img title="People vector" src="@src/images/2590505.png" alt="Vector of person programming" />
+                    <img title="People vector" src="@src/assets/2590505.png" alt="Vector of person programming" />
                 </div>
             </div>
         </div>

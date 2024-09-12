@@ -31,15 +31,15 @@
 }
 
 #card-1 {
-    background: url(../../images/weather-app-preview.gif) bottom left/100% no-repeat;
+    background: url(../../assets/weather-app-preview.gif) bottom left/100% no-repeat;
 }
 
 #card-2 {
-    background: url(../../images/todo-app-preview.gif) top left/100% no-repeat;
+    background: url(../../assets/todo-app-preview.gif) top left/100% no-repeat;
 }
 
 #card-3 {
-    background: url(../../images/login-app-preview.gif) top left/100% no-repeat;
+    background: url(../../assets/login-app-preview.gif) top left/100% no-repeat;
 }
 
 .project-card:hover {
@@ -105,6 +105,7 @@
     transition: 0.35s ease;
     transform: translateY(0) scale(0);
     left: calc(50% - 4rem);
+    background: #fff;
 }
 
 .preview-btn:hover {

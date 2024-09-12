@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
+
 import { useIsMobile } from '@src/composables/generalMethods.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -46,15 +46,12 @@ export default {
             opacity: 0,
             stagger: 0.25
         })
-
         gsap.from('.header_subtext', {
             duration: 1,
             x: -100,
             opacity: 0,
             delay: .5
         })
-
-        // slide in explore button
         gsap.from('.explore_btn', {
             duration: 1,
             x: -100,

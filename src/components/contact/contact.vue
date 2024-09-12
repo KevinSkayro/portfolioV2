@@ -89,11 +89,6 @@ export default {
     methods: {
         sendEmail() {
 
-            // if(this.form.name === '' || this.form.email === '' || this.form.message === '') {
-            //     alert('Please fill out all fields');
-            //     return;
-            // }
-
             if (this.form.website !== '') {
                 alert('are you a bot?' + this.form.website);
                 return;
@@ -113,7 +108,6 @@ export default {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
                     if (data.success) this.formSubmitted = true;
                     // Reset form
                     this.form.name = '';
@@ -121,9 +115,6 @@ export default {
                     this.form.message = '';
                     this.formLoading = false;
                 })
-
-
-
 
         }
     },

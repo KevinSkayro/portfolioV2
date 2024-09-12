@@ -32,7 +32,6 @@
     width: 1000px;
     max-width: 80%;
 
-
     h3 {
         font-size: 2rem;
         text-align: center;
@@ -40,15 +39,32 @@
         margin-bottom: 1rem;
     }
 
+    .about-content {
+        flex: 1;
+        padding: 2rem;
+        color: #fff;
+    }
+
+    @media screen and (max-width: 550px) {
+        h3 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+        .about-content {
+            padding: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 414px) {
+        .about-content {
+            padding: 1rem 0.1rem;
+        }
+    }
+
     img {
         width: 100%;
     }
-}
 
-.about-content {
-    flex: 1;
-    padding: 2rem;
-    color: #fff;
 }
 
 .content-one {

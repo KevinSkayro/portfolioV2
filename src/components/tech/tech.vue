@@ -1,10 +1,7 @@
 <template>
     <section id="tech">
         <div class="section-container">
-
             <h2>TECHNOLOGIES</h2>
-
-
             <div class="options">
                 <template v-for="(tech, index) in technologies" :key="index">
                     <div class="option" :class="{ 'active': activeCard === index }"
@@ -45,7 +42,6 @@ export default {
             opacity: 0,
             stagger: 0.25
         })
-
         gsap.from('.options', {
             duration: 1,
             x: -100,
@@ -89,13 +85,13 @@ export default {
                     image: 'https://kevinskayro.com/wp-content/uploads/2023/05/sql-1024x576.jpg',
                     expericeStart: new Date('2019-06-01')
                 },
-                {
-                    name: 'Wordpress',
-                    icon: 'fa-brands fa-wordpress',
-                    image: 'https://66.media.tumblr.com/f19901f50b79604839ca761cd6d74748/tumblr_o65rohhkQL1qho82wo1_1280.jpg',
-                    expericeStart: new Date('2012-04-05'),
-                    description: "I've been working with Wordpress on and off for a long time."
-                },
+                // {
+                //     name: 'Wordpress',
+                //     icon: 'fa-brands fa-wordpress',
+                //     image: 'https://66.media.tumblr.com/f19901f50b79604839ca761cd6d74748/tumblr_o65rohhkQL1qho82wo1_1280.jpg',
+                //     expericeStart: new Date('2012-04-05'),
+                //     description: "I've been working with Wordpress on and off for a long time."
+                // },
             ]
         }
     },
