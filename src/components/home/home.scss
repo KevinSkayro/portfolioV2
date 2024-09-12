@@ -21,3 +21,18 @@
         cursor: pointer;
     }
 }
+
+@media screen and (max-width: 850px) {
+    .hero_container .hero_content .header_text { 
+        font-size: 4rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .hero_container .hero_content .header_text { 
+        font-size: 2.5rem;
+    }
+    .hero_container .hero_content .header_subtext {
+        font-size: 1.2rem;
+    }
+}

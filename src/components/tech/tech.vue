@@ -59,17 +59,17 @@ export default {
             activeCard: 0,
             technologies: [
                 {
+                    name: 'React.js',
+                    icon: 'fa-brands fa-react',
+                    image: 'https://kevinskayro.com/wp-content/uploads/2024/06/react-1024x576.png',
+                    expericeStart: new Date('2023-10-01'),
+                    description: 'I have experience with React.js, specially with Next.js'
+                },
+                {
                     name: 'Vue.js',
                     icon: 'fa-brands fa-vuejs',
                     image: 'https://kevinskayro.com/wp-content/uploads/2023/01/vue-1024x576.jpg',
                     expericeStart: new Date('2021-11-01')
-                },
-                {
-                    name: 'React.js',
-                    icon: 'fa-brands fa-react',
-                    image: 'https://kevinskayro.com/wp-content/uploads/2024/06/react-1024x576.png',
-                    expericeStart: new Date('2023-11-01'),
-                    description: 'I have experience with React.js, specially with Next.js'
                 },
                 {
                     name: 'Laravel',

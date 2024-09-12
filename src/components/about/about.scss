@@ -1,3 +1,13 @@
+#about {
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+.section-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .about-container {
     transform: skewY(5deg);
     display: flex;
@@ -18,9 +28,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2rem;
+    margin: 2rem 0 3rem 0;
     width: 1000px;
     max-width: 80%;
+
 
     h3 {
         font-size: 2rem;
@@ -37,10 +48,17 @@
 .about-content {
     flex: 1;
     padding: 2rem;
+    color: #fff;
 }
 
 .content-one {
     background-color: var(--user-button-cardborder);
     border-radius: 10px;
     box-shadow: 0 0 10px var(--user-button-shadow);
+}
+
+@media screen and (max-width: 850px) {
+    .about-inner-container {
+        flex-direction: column;
+    }
 }

@@ -3,6 +3,9 @@
     align-content: center;
     justify-content: center;
     flex-direction: column;
+
+    max-height: 100vh;
+    overflow-y: scroll;
 }
 
 .contact-inner-container {
@@ -10,9 +13,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 0rem;
+    margin: 0 0 3rem 0;
     flex-wrap: wrap;
     padding: 0 0 2rem 0;
+
 }
 
 .social-menu ul {
@@ -24,7 +28,7 @@
 
 .social-menu ul li {
     list-style: none;
-    margin: 0 10px;
+    margin: 10px;
 }
 
 .social-menu ul li a {
