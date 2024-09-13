@@ -9,9 +9,9 @@
             <h1 class="header_text">Hi, I'm Kevin</h1>
             <h1 class="header_text">I'm a Front-end Developer</h1>
             <h2 class="header_subtext">I build websites and web applications.</h2>
-            <router-link to="/projects" class="explore_btn">
+            <RouterLink to="/projects" class="explore_btn">
                 SEE PROJECTS <font-awesome-icon icon="fa-solid fa-arrow-right" />
-            </router-link>
+            </RouterLink>
         </div>
     </section>
 </template>

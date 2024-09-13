@@ -4,6 +4,7 @@ import Projects from "@src/components/projects/projects.vue"
 import Tech from "@src/components/tech/tech.vue"
 import Contact from "@src/components/contact/contact.vue"
 import About from "@src/components/about/about.vue"
+import NotFound from '@src/components/NotFound.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
             name: "About",
             component: About,
         },
+        {
+            path: '/:pathMatch(.*)*', // Catch-all route for undefined paths
+            name: 'NotFound',
+            component: NotFound,
+          },
     ],
 })
 export default router

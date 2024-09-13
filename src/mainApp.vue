@@ -22,8 +22,25 @@ import Menu from './components/menu/menu.vue';
 const delay = ref(false);
 
 onMounted(() => {
+    const url = window.location.pathname;
+    let delayTime = 0;
+    switch (url) {
+        case '/':
+            delayTime = 2000;
+            break;
+        case '/projects':
+        case '/tech':
+        case '/about':
+        case '/contact':
+            delayTime = 1000;
+            break;
+        default:
+            delayTime = 500;
+            break;
+    }
+
     setTimeout(() => {
         delay.value = true;
-    }, 2000); // 2000 milliseconds = 2 seconds
+    }, delayTime);
 });
 </script>

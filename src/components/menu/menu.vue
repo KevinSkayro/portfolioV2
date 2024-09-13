@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
+
 import router from '@src/router/index.js'
 export default {
     mounted() {
